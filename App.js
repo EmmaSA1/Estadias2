@@ -17,9 +17,9 @@ import HomeCatalogoNeg from "./Screens/CATALOGOS/NEGOCIO/Home";
 import AgregarCatalogoNeg from "./Screens/CATALOGOS/NEGOCIO/Agregar";
 import SplashCatalogoNeg from "./Screens/CATALOGOS/NEGOCIO/Splash";
 
-import HomeCatalogoLocal from "./Screens/CATALOGOS/LOCALIDADES/Home";
-import AgregarCatalogoLocal from "./Screens/CATALOGOS/LOCALIDADES/Agregar";
-import SplashCatalogoLocal from "./Screens/CATALOGOS/LOCALIDADES/Splash";
+import HomeCatalogoLoc from "./Screens/CATALOGOS/LOCALIDADES/Home";
+import AgregarCatalogoLoc from "./Screens/CATALOGOS/LOCALIDADES/Agregar";
+import SplashCatalogoLoc from "./Screens/CATALOGOS/LOCALIDADES/Splash";
 
 
 //import GrupPriv from "./Screens/GrupPriv";
@@ -125,25 +125,25 @@ export default function App() {
         />
         <Stack.Screen
           name="HomeCatalogoLoc"
-          component={HomeCatalogoLocal}
+          component={HomeCatalogoLoc}
           options={{
-            title: "HomeCatalogoLocal",
+            title: "HomeCatalogoLoc",
             headerShown: false,
           }}
         />
         <Stack.Screen
-          name="AgregarCatalogoLocal"
-          component={AgregarCatalogoLocal}
+          name="AgregarCatalogoLoc"
+          component={AgregarCatalogoLoc}
           options={{
-            title: "AgregarCatalogoLocal",
+            title: "AgregarCatalogoLoc",
             headerShown: false,
           }}
         />
         <Stack.Screen
-          name="SplashCatalogoLocal"
-          component={SplashCatalogoLocal}
+          name="SplashCatalogoLoc"
+          component={SplashCatalogoLoc}
           options={{
-            title: "SplashCatalogoLocal",
+            title: "SplashCatalogoLoc",
             headerShown: false,
           }}
         />

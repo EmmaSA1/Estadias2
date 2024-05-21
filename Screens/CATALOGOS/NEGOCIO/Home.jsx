@@ -46,7 +46,7 @@ export default function Home() {
     // Actualizar el nombre del negocio seleccionado al cargar la pantalla
     useEffect(() => {
         if (route.params?.selectedOption) {
-            Comun.setNombreNegocio(route.params.selectedOption);
+            nombre.setNombreNegocio(route.params.selectedOption);
         }
     }, [route.params?.selectedOption]);
 
@@ -161,7 +161,7 @@ export default function Home() {
     return (
         <View style={styles.container}>
             <View style={styles.containerHeader}>
-                <Text style={styles.nombreNegocio}>{Comun.nombreNegocio.Comun}</Text>
+                <Text style={styles.nombreNegocio}>{Comun.nombreNegocio.nombre}</Text>
             </View>
             <View style={styles.container2}>
                 <Pressable
@@ -206,24 +206,25 @@ export default function Home() {
 
 
                     <ScrollView>
-                        {data.filter(item => statusFilter === 'null' ? item.status !== 'baja' : item.status === 'baja').map((item) => (                   
-                           <View key={item.cod_negocio} style={styles.Contenido}>
-
-
+                        {data.filter((val) => {
+                            if (searchTerm === '') {
+                                return val;
+                            } else if (val.Nombre.toLowerCase().includes(searchTerm.toLowerCase())) {
+                                return val;
+                            }
+                        })
+                            .filter((val) => statusFilter === 'null' ? val.status === 'null' : val.status !== 'null')
+                            .slice((page - 1) * pageSize, page * pageSize)
+                            .map((item, index) => (
+                                <View key={index} style={styles.Contenido}>
                                     <Text style={styles.cell}>{item.Nombre}</Text>
-                                    <Text style={styles.cell}> {item.Giro}</Text>
-
-
+                                    <Text style={styles.cell}>{item.Giro}</Text>
                                     <View style={styles.iconContainer}>
-                                        <TouchableOpacity
-                                            onPress={() => handleAction(Comun.accion.Editar, item.cod_negocio)}
-                                        >
+                                    <TouchableOpacity onPress={() => handleAction(Comun.accion.Editar, item.cod_privilegio)}>
                                             <Icon name="eye-outline" size={25} color="black" />
                                         </TouchableOpacity>
                                         {statusFilter === 'baja' ? (
-                                            <TouchableOpacity
-                                                onPress={() => handleAction(Comun.accion.Alta)}
-                                            >
+                                            <TouchableOpacity onPress={() => handleAction(Comun.accion.Alta)}>
                                                 <Icon name="checkmark-outline" size={25} color="black" />
                                             </TouchableOpacity>
                                         ) : (
@@ -232,8 +233,8 @@ export default function Home() {
                                             </TouchableOpacity>
                                         )}
                                     </View>
-                            </View>
-                        ))}
+                                </View>
+                            ))}
                     </ScrollView>
 
                     <View style={styles.pagination}>

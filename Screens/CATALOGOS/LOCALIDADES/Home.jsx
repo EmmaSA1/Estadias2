@@ -1,10 +1,3 @@
-/*
- EMMANUEL SANTOS APAEZ
- 16 de mayo de 2024 - 23 hrs
- Descripcion: Contiene las La vista principal del catalogo
-*/
-
-
 import React, { useState, useEffect } from 'react';
 import { Text, View, ScrollView, Alert, Modal, Pressable, TextInput, TouchableOpacity } from "react-native";
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -13,9 +6,10 @@ import { styles } from "../../../Styles/Styles";
 import * as Comun from '../../../Config/Comun';
 import FormLocalidades from '../../../Config/formLocalidades';
 
-//Declaramos los valores iniciales del formulario 
+// Declaramos los valores iniciales del formulario 
 const initialSelected = {
-    Nombre: ''
+    Localidad: '',
+    Estados: ''
 };
 
 export default function Home() {
@@ -27,7 +21,7 @@ export default function Home() {
     const [editModalVisible, setEditModalVisible] = useState(false);
     // Hook para marcar el negocio seleccionado
     const [selected, setSelected] = useState(null);
-    // Hook para la barra de busqueda
+    // Hook para la barra de búsqueda
     const [searchTerm, setSearchTerm] = useState('');
     // Estado para la acción actual
     const [accion, setAccion] = useState('');
@@ -39,12 +33,12 @@ export default function Home() {
     // Hook para el filtro por status
     const [statusFilter, setStatusFilter] = useState('null');
 
-        // Actualizar el nombre del negocio seleccionado al cargar la pantalla
-        useEffect(() => {
-            if (route.params?.selectedOption) {
-                Comun.setNombreNegocio(route.params.selectedOption);
-            }
-        }, [route.params?.selectedOption]);
+    // Actualizar el nombre del negocio seleccionado al cargar la pantalla
+    useEffect(() => {
+        if (route.params?.selectedOption) {
+            nombre.setNombreNegocio(route.params.selectedOption);
+        }
+    }, [route.params?.selectedOption]);
 
     // Función para cambiar la acción cuando se presiona un botón
     const handleAction = (accion, cod_localidad) => {
@@ -55,7 +49,7 @@ export default function Home() {
         switch (accion) {
             case 13:
                 console.log("Agregar nuevo negocio");
-                navigation.replace('AgregarCatalogoLocal', { accion: accion });
+                navigation.replace('AgregarCatalogoLoc', { accion: accion });
                 break;
             case 10:
                 console.log("Consultar negocio");
@@ -78,22 +72,25 @@ export default function Home() {
         }
     };
 
-    //aqui van los datos se sustituira por la consulta a la base de datos
+    // Aquí van los datos, se sustituirá por la consulta a la base de datos
     const [data, setData] = useState([
-        { cod_localidad: '01', Nombre: 'Perfumes Ian', status: 'null' },
-        { cod_localidad: '02', Nombre: 'Soluciones T.I', status: 'null' },
-        { cod_localidad: '03', Nombre: 'prueba1', status: 'null' },
-        { cod_localidad: '04', Nombre: 'Soluciones T.I', status: 'null' },
-        { cod_localidad: '05', Nombre: 'prueba1', status: 'null' },
-        { cod_localidad: '06', Nombre: 'Soluciones T.I', status: 'null' },
-        { cod_localidad: '07', Nombre: 'prueba1', status: 'null' },
-        { cod_localidad: '08', Nombre: 'Estampa', status: '2004-04-12' },
-        
+        { cod_localidad: '01', Localidad: 'Xochitepec', Estados: 'Morelos',status: 'null' },
+        { cod_localidad: '02', Localidad: 'Tezoyuca', Estados: 'Morelos', status: 'null' },
+        { cod_localidad: '03', Localidad: 'Cuernavaca', Estados: 'Morelos', status: 'null' },
+        { cod_localidad: '04', Localidad: 'Temixco', Estados: 'Morelos', status: 'null' },
+        { cod_localidad: '05', Localidad: 'Cuernavaca', Estados: 'Morelos', status: 'null' },
+        { cod_localidad: '06', Localidad: 'Puente', Estados: 'Morelos', status: 'null' },
+        { cod_localidad: '07', Localidad: 'Zapata', Estados: 'Morelos', status: 'null' },
+        { cod_localidad: '08', Localidad: 'Xochimilco', Estados: 'Morelos', status: 'null' },
+        { cod_localidad: '09', Localidad: 'Buenos ', Estados: 'Morelos', status: 'null' },
+        { cod_localidad: '10', Localidad: 'Xochitepec', Estados: 'Morelos',status: 'null' },
+        { cod_localidad: '11', Localidad: 'Xochitepec', Estados: 'Morelos',status: 'null' },
+
+
     ]);
 
-
-     //función para abrir el modal de edición y mostrar los datos del negocio
-     const openEditModal = (cod_localidad) => {
+    // Función para abrir el modal de edición y mostrar los datos del negocio
+    const openEditModal = (cod_localidad) => {
         const datos = data.find(item => item.cod_localidad === cod_localidad);
         setSelectedValues(datos); // Actualizar selectedValues con todos los datos del privilegio seleccionado
         setSelected(datos);
@@ -101,9 +98,8 @@ export default function Home() {
         console.log(datos);
     };
 
-
-     // Función para editar los datos del negocio
-     const handleEdit = (values) => {
+    // Función para editar los datos del negocio
+    const handleEdit = (values) => {
         // Encuentra el índice del negocio seleccionado
         const index = data.findIndex(item => item.cod_localidad === selected.cod_localidad);
         // Crea una copia de los datos existentes
@@ -116,9 +112,8 @@ export default function Home() {
         console.log("Datos editados:", newData[index]);
     };
 
-
-      //funcion para poner baja
-      const ponerBaja = () => {
+    // Función para poner baja
+    const ponerBaja = () => {
         Alert.alert(
             "¿Estás seguro de asignar baja?",
             "Esta acción no se puede deshacer",
@@ -130,14 +125,13 @@ export default function Home() {
                 },
                 {
                     text: "Sí",
-                    onPress: () => { navigation.navigate('SplashCatalogoLocal', { accion: Comun.accion.Baja }) }
+                    onPress: () => { navigation.navigate('SplashCatalogoLoc', { accion: Comun.accion.Baja }) }
                 }
             ]
         );
     };
 
-
-    //funcion para quitar baja
+    // Función para quitar baja
     const quitarBaja = () => {
         Alert.alert(
             "¿Estás seguro de quitar baja?",
@@ -150,7 +144,7 @@ export default function Home() {
                 },
                 {
                     text: "Sí",
-                    onPress: () => { navigation.navigate('SplashCatalogoLocal', { accion: Comun.accion.Alta }) }
+                    onPress: () => { navigation.navigate('SplashCatalogoLoc', { accion: Comun.accion.Alta }) }
                 }
             ]
         );
@@ -163,36 +157,33 @@ export default function Home() {
 
     const handleBack = () => {
         navigation.replace('Catalogos');
-
     };
 
-    
-    //funcion para mostrar la paguina anterior
+    // Función para mostrar la página anterior
     const handlePrevious = () => {
         if (page > 1) {
             setPage(page - 1);
         }
     };
 
-    //funcion para mostrar la siguiente paguina
+    // Función para mostrar la siguiente página
     const handleNext = () => {
         if ((page * pageSize) < data.length) {
             setPage(page + 1);
         }
     };
 
-
     return (
         <View style={styles.container}>
             <View style={styles.containerHeader}>
-                <Text style={styles.nombreNegocio}>{Comun.nombreNegocio.Comun}</Text>
+                <Text style={styles.nombreNegocio}>{Comun.nombreNegocio.nombre}</Text>
             </View>
             <View style={styles.container2}>
                 <Pressable
                     style={[styles.button, styles.buttonAzul]}
                     onPress={handleBack}
                 >
-                    <Text style={styles.textStyle}>Regrsear</Text>
+                    <Text style={styles.textStyle}>Regresar</Text>
                 </Pressable>
             </View>
             <View style={styles.container3}>
@@ -209,7 +200,6 @@ export default function Home() {
                     >
                         <Text style={styles.textStyle}>{statusFilter === 'null' ? 'Bajas' : 'Vigentes'}</Text>
                     </Pressable>
-                    
                 </View>
                 <View style={styles.table}>
                     <View style={styles.containerSearch}>
@@ -220,15 +210,20 @@ export default function Home() {
                             value={searchTerm}
                         />
                     </View>
+
                     <View style={styles.Encabezados}>
-                        <Text style={styles.Titulo}>NOMBRE</Text>
+                        <Text style={styles.Titulo}>Localidad</Text>
+                        <Text style={styles.Titulo}>   Estados</Text>
                         <Text style={styles.TituloAcciones}>ACCIONES</Text>
                     </View>
+
                     <ScrollView>
                         {data.filter((val) => {
                             if (searchTerm === '') {
                                 return val;
-                            } else if (val.Nombre.toLowerCase().includes(searchTerm.toLowerCase())) {
+                            } else if (val.Localidad.toLowerCase().includes(searchTerm.toLowerCase())) {
+                                return val;
+                            } else if (val.Estados.toLowerCase().includes(searchTerm.toLowerCase())) {
                                 return val;
                             }
                         })
@@ -236,7 +231,8 @@ export default function Home() {
                             .slice((page - 1) * pageSize, page * pageSize)
                             .map((item, index) => (
                                 <View key={index} style={styles.Contenido}>
-                                    <Text style={styles.cell}>{item.Nombre}</Text>
+                                    <Text style={styles.cell}>{item.Localidad}</Text>
+                                    <Text style={styles.cell}>{item.Estados}</Text>
                                     <View style={styles.iconContainer}>
                                         <TouchableOpacity onPress={() => handleAction(Comun.accion.Editar, item.cod_localidad)}>
                                             <Icon name="eye-outline" size={25} color="black" />
@@ -277,7 +273,7 @@ export default function Home() {
                     <View style={styles.modalView}>
                         <Text style={styles.titleModal}>Modificar {Comun.nombreCatalogo[103]}</Text>
                         <ScrollView>
-                            <Text style={styles.titleInput}>Código de localida</Text>
+                            <Text style={styles.titleInput}>Código de localidad</Text>
                             <TextInput
                                 style={styles.input}
                                 placeholder="Código privilegio"

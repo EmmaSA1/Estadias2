@@ -20,7 +20,8 @@ export default function formLocalidades({ initialValues, onSubmit, action }) {
 
     //aqui manejamos las validaciones
     const validaciones = Yup.object({
-        Nombre: Yup.string().required('Este campo es obligatorio'),
+        Localidad: Yup.string().required('Este campo es obligatorio'),
+        Estado: Yup.string().required('Este campo es obligatorio'),
     });
 
     const handleButtonPress = (values, event) => {
@@ -49,7 +50,7 @@ export default function formLocalidades({ initialValues, onSubmit, action }) {
                         onPress: () => {
                             event.persist();
                             onSubmit(values);
-                            navigation.navigate('SplashCatalogoLocal', { accion: action });
+                            navigation.navigate('SplashCatalogoLoc', { accion: action });
                         },
                     },
                 ],
@@ -69,7 +70,7 @@ export default function formLocalidades({ initialValues, onSubmit, action }) {
                         onPress: () => {
                             event.persist();
                             onSubmit(values);
-                            navigation.navigate('SplashCatalogoLocal', { accion: action });
+                            navigation.navigate('SplashCatalogoLoc', { accion: action });
                         },
                     },
                 ],
@@ -92,14 +93,28 @@ export default function formLocalidades({ initialValues, onSubmit, action }) {
                         <Text style={styles.titleInput}>Nombre de la localidad</Text>
                         <TextInput
                             style={styles.input}
-                            onChangeText={formikProps.handleChange('Nombre')}
-                            onBlur={formikProps.handleBlur('Nombre')}
+                            onChangeText={formikProps.handleChange('Localidad')}
+                            onBlur={formikProps.handleBlur('Localidad')}
                             placeholder="Nombre de la localidad"
-                            value={formikProps.values.Nombre}
+                            value={formikProps.values.Localidad}
                         />
-                        {formikProps.touched.Nombre && formikProps.errors.Nombre &&
-                            <Text style={{ color: 'white' }}>{formikProps.errors.Nombre}</Text>
+                        {formikProps.touched.Localidad && formikProps.errors.Localidad &&
+                            <Text style={{ color: 'white' }}>{formikProps.errors.Localidad}</Text>
                         }
+
+                        <Text style={styles.titleInput}>Estado de la localidad</Text>
+                        <TextInput
+                            style={styles.input}
+                            onChangeText={formikProps.handleChange('Estado')}
+                            onBlur={formikProps.handleBlur('Estado')}
+                            placeholder="Estado de la localidad"
+                            value={formikProps.values.Estado}
+                        />
+                    
+                        {formikProps.touched.Estado && formikProps.errors.Estado &&
+                            <Text style={{ color: 'white' }}>{formikProps.errors.Estado}</Text>
+                        }
+
 
                         <View style={styles.container4}>
                             <TouchableOpacity

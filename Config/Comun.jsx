@@ -1,11 +1,9 @@
 /*
- FRANCO HERNANDEZ ANGELUZ ABIMELEK
+ FRANCO HERNANDEZ ANGELUZ ABIMELEK y EMMANUEL SANTOS APAEZ
  08 de mayo de 2024 - 12 hrs
  Descripcion: Contiene las variables comunes para los archivos utilizados en el sistema
 
- EMMANUEL SANTOS APAEZ 
- 16 de mayo - 13 hrs
-Descripción: Actualización del comun 
+
 */
 
 export let accion = {
@@ -24,15 +22,6 @@ export let codCatalogo = {
   Localidades: 103
 };
 
-
-export const nombreNegocio = {
-    Comun: ''
-};
-
-export const setNombreNegocio = (nombre) => {
-    nombreNegocio.Comun = nombre;
-};
-
 export let nombreCatalogo = {
   100: 'Negocios',
   101: 'Privilegios',
@@ -40,9 +29,21 @@ export let nombreCatalogo = {
   103: 'Localidades'
 };
 
-export let codNegocio = {
 
+export const nombreNegocio = {
+    nombre: ''
 };
 
+export const CodigoNegocio = {
+  codigo: ''
+};
 
+export const setNombreNegocio = (nombre) => {
+  nombreNegocio.nombre = nombre;
+  console.log("Nombre de negocio establecido:", nombre);
+};
 
+export const setCodNegocio = (codigo) => {
+  CodigoNegocio.codigo = codigo;
+  console.log("Código de negocio establecido:", codigo);
+};

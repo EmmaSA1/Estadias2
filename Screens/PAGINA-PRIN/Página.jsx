@@ -14,7 +14,7 @@ export default function Login() {
   const navigation = useNavigation();
 
   const handleButtonPress = () => {
-    navigation.replace('Catalogos');
+    navigation.navigate('Catalogos');
 
   };
 

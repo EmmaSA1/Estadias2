@@ -20,7 +20,7 @@ export default function Splash() {
   //plazo de tiempo 
   useEffect(() => {
     const redirect = setTimeout(() => {
-      navigation.replace('HomeCatalogoLocal');
+      navigation.replace('HomeCatalogoLoc');
     }, 1500);
     return () => clearTimeout(redirect);
   }, []);

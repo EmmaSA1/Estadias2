@@ -41,7 +41,7 @@ export default function Home() {
         // Actualizar el nombre del negocio seleccionado al cargar la pantalla
         useEffect(() => {
             if (route.params?.selectedOption) {
-                Comun.setNombreNegocio(route.params.selectedOption);
+                nombre.setNombreNegocio(route.params.selectedOption);
             }
         }, [route.params?.selectedOption]);
 
@@ -189,7 +189,7 @@ export default function Home() {
     return (
         <View style={styles.container}>
             <View style={styles.containerHeader}>
-                <Text style={styles.nombreNegocio}>{Comun.nombreNegocio.Comun}</Text>
+                <Text style={styles.nombreNegocio}>{Comun.nombreNegocio.nombre}</Text>
             </View>
             <View style={styles.container2}>
                 <Pressable
