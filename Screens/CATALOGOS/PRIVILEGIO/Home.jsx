@@ -287,7 +287,7 @@ export default function Home() {
                         <ScrollView>
                             <Text style={styles.titleInput}>Código del privilegio</Text>
                             <TextInput
-                                style={styles.input}
+                                style={styles.inputCodPriv}
                                 placeholder="Código privilegio"
                                 value={selected ? selected.cod_privilegio : ''}
                             />

@@ -2,9 +2,13 @@
  FRANCO HERNANDEZ ANGELUZ ABIMELEK Y EMMANUEL SANTOS APAEZ
  11 de mayo de 2024 - 14 hrs
  Descripcion: Contiene la los estilos de la aplicacion
+
+  21 de mayo de 2024 - 14 hrs
+ Descripcion: Contiene la los estilos de la aplicacion
 */
 
 import { StyleSheet } from "react-native";
+import { Row } from "react-native-table-component";
 
 //variables para cada color de fonfo y de botones
 //variable para el color del fondo
@@ -300,15 +304,53 @@ export const styles = StyleSheet.create({
 
   input: {
     height: 50,
+    width: 300, // Ajusta el valor para que sea igual en ambos estilos
     borderWidth: 1,
     borderColor: borderColor,
     borderRadius: 10,
     paddingHorizontal: 10,
-    marginBottom: 20,
-    backgroundColor: colorTabla, // Fondo blanco para los campos de entrada
+    marginBottom: 20, // Ajusta este valor si es necesario para mantener la consistencia vertical
+    backgroundColor: colorTabla,
     fontSize: 16,
     color: colorLetraNegra,
+    textAlign: "center",
+    marginLeft: "auto", // Esto ajustará el inputCodPriv hacia la derecha
+    marginRight: "auto", // Esto ajustará el inputCodPriv hacia la izquierda
   },
+  
+  inputNombre: {
+    height: 50,
+    width: 300, // Ajustamos el ancho relativo en lugar de un valor fijo
+    borderWidth: 1,
+    borderColor: borderColor,
+    borderRadius: 10,
+    paddingHorizontal: 20, // Ajustamos el padding horizontal
+    marginBottom: 20,
+    backgroundColor: colorTabla,
+    fontSize: 16,
+    color: colorLetraNegra,
+    textAlign: "center",
+    marginLeft: "auto", // Esto ajustará el inputCodPriv hacia la derecha
+    marginRight: "auto", // Esto ajustará el inputCodPriv hacia la izquierda
+  },
+  
+  inputCodPriv: {
+    height: 50,
+    width: 300, // Ajustamos el ancho relativo en lugar de un valor fijo
+    borderWidth: 1,
+    borderColor: borderColor,
+    borderRadius: 10,
+    paddingHorizontal: 20, // Ajustamos el padding horizontal
+    marginBottom: 20,
+    marginLeft: "auto", // Esto ajustará el inputCodPriv hacia la derecha
+    marginRight: "auto", // Esto ajustará el inputCodPriv hacia la izquierda
+    backgroundColor: colorTabla,
+    fontSize: 16,
+    color: colorLetraNegra,
+    textAlign: "center",
+  },
+
+  
 
   titleInput: {
     color: colorLetraNegra,
@@ -379,6 +421,14 @@ export const styles = StyleSheet.create({
     width: 150,
     height: 150,
     marginBottom: 50,
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+
+  logo1: {
+    width: 250,
+    height: 200,
+    marginBottom: 10,
     marginLeft: "auto",
     marginRight: "auto",
   },
@@ -493,9 +543,10 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+
   pickerContainer: {
     backgroundColor: "#fff",
-    width: "80%",
+    width: "100%",
     borderRadius: 10,
     padding: 20,
     elevation: 10,
@@ -531,10 +582,11 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    width: "80%",
+    width: "56%",
     marginBottom: 50,
     fontWeight: "bold",
   },
+
 
   buttonContainer1: {
     flexDirection: "row",
@@ -545,28 +597,36 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 
-  buttonContainer2: {
+  /*buttonContainer2: {
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
     width: "80%",
     marginBottom: 50,
     fontWeight: "bold",
-  },
+  },*/
 
   buttonWrapper: {
     alignItems: "center",
   },
+
   buttonText: {
     fontSize: 18,
     fontWeight: "bold",
     color: colorAmarillo,
     marginTop: 5,
   },
+
   image: {
     width: 100,
     height: 100,
     marginBottom: 5,
+  },
+
+  imagePag: {
+    width: 170,
+    height: 170,
+    marginBottom: 15,
   },
 
   //Estilos de Catalogos
@@ -600,18 +660,24 @@ export const styles = StyleSheet.create({
     padding: 40,
     elevation: 1,
   },
+  
   backButton: {
+     flexDirection: "row",
+    justifyContent: "space-around",
     alignItems: "center",
-    justifyContent: "center",
-    width: "100%",
-    height: 50,
-    borderRadius: 8,
-    backgroundColor: botonesColorAzul, // Rojo
+    width: "80%",
+    marginBottom: 50,
+    fontWeight: "bold",
   },
+
   backButtonText: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 1,
     color: "white",
     fontSize: 18,
-  },
+    fontWeight: "bold",
+   },
 
   tableChica: {
     height: "auto",

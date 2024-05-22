@@ -1,12 +1,11 @@
 /*
- EMMANUEL SANTOS APAEZ
- 09 de mayo de 2024 - 18 hrs
- Descripcion: Contiene la pantalla que filtra los negocios
-
+ EMMANUEL SANTOS APAEZ 
+ 21 de mayo de 2024 - 18 hrs
+ Descripcion: Es la actualizacón de filtrado para la muestra de codigo y nombre de negocio
 
 */
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, Modal, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { View, Button, Text, TouchableOpacity, Alert, Image } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from '../../Styles/Styles';
@@ -15,10 +14,13 @@ import { setNombreNegocio, setCodNegocio } from '../../Config/Comun';
 
 export default function FilterScreen() {
   const [selectedOption, setSelectedOption] = useState('');
-  const [showPicker, setShowPicker] = useState(false);
   const navigation = useNavigation();
 
   const handleNext = () => {
+    if (selectedOption === '') {
+      Alert.alert('Error', 'Por favor, seleccione una empresa antes de continuar.');
+      return;
+    }
     // Establecer el nombre del negocio seleccionado
     setNombreNegocio(selectedOption);
 
@@ -34,7 +36,7 @@ export default function FilterScreen() {
     }
 
     navigation.navigate('PaginaPrin', { selectedOption });
-};
+  };
 
   // Datos de ejemplo para mostrar en el Picker
   const data = [
@@ -46,37 +48,29 @@ export default function FilterScreen() {
     <View style={styles.container}>
       <View style={styles.containerFil}>
         <View style={styles.table}>
+        <Image
+            source={{ uri: 'https://static.vecteezy.com/system/resources/previews/010/349/834/non_2x/digital-native-technology-color-icon-illustration-vector.jpg' }}
+            style={styles.logo1}
+          />
           <Text style={styles.title}>Listado de negocios</Text>
           <View style={styles.UserContainer}>
-            <TextInput
-              style={styles.selectInput}
-              placeholder="Seleccione una empresa"
-              value={selectedOption}
-              onFocus={() => setShowPicker(true)}
-              onChangeText={(text) => setSelectedOption(text)}
-            />
-            <TouchableOpacity onPress={() => setShowPicker(true)} style={styles.IconContainer}>
-              <Ionicons name="caret-down" size={24} color="black" />
-            </TouchableOpacity>
+            <View style={styles.selectInput}>
+              <Picker
+                selectedValue={selectedOption}
+                onValueChange={(itemValue) => setSelectedOption(itemValue)}
+              >
+                {data.map((item, index) => (
+                  <Picker.Item key={index} label={item.Nombre} value={item.Nombre} />
+                ))}
+              </Picker>
+            </View>
           </View>
-          <Modal visible={showPicker} transparent animationType="slide">
-            <TouchableWithoutFeedback onPress={() => setShowPicker(false)}>
-              <View style={styles.modalBackground}>
-                <View style={styles.pickerContainer}>
-                <Picker
-                    selectedValue={selectedOption}
-                    onValueChange={(itemValue) => setSelectedOption(itemValue)}
-                  >
-                    {data.map((item, index) => (
-                      <Picker.Item key={index} label={item.Nombre} value={item.Nombre} />
-                    ))}
-                  </Picker>
-                </View>
-              </View>
-            </TouchableWithoutFeedback>
-          </Modal>
           <View style={styles.ButtonFil}>
-            <Button title="Continuar" onPress={handleNext} />
+            <Button
+              title="Continuar"
+              onPress={handleNext}
+              disabled={selectedOption === ''}
+            />
           </View>
         </View>
       </View>

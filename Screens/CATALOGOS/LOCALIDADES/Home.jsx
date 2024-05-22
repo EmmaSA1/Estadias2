@@ -98,7 +98,7 @@ export default function Home() {
         console.log(datos);
     };
 
-    // Función para editar los datos del negocio
+    // Función para editar los datos de la localidad
     const handleEdit = (values) => {
         // Encuentra el índice del negocio seleccionado
         const index = data.findIndex(item => item.cod_localidad === selected.cod_localidad);
@@ -275,12 +275,13 @@ export default function Home() {
                         <ScrollView>
                             <Text style={styles.titleInput}>Código de localidad</Text>
                             <TextInput
-                                style={styles.input}
+                                style={styles.inputCodPriv}
                                 placeholder="Código privilegio"
                                 value={selected ? selected.cod_localidad : ''}
                             />
                             <FormLocalidades onSubmit={handleSubmit} action={accion} initialValues={selectedValues} />
                         </ScrollView>
+                        
                     </View>
                 </View>
             </Modal>

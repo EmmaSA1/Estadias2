@@ -43,11 +43,11 @@ export default function Catalogos() {
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
         <View style={styles.container}>
         <Text style={styles.title2}>Catalogos</Text>
-                <View style={styles.buttonContainer}>
+                <View style={styles.buttonContainer1}>
                     <Pressable
                         style={[styles.buttonCatalogo, styles.buttonAzul]}
                         onPress={() => handleCatalogos(Comun.codCatalogo.Negocios)}>
-                        <Image source={{ uri: 'https://cdn-icons-png.flaticon.com/512/5237/5237880.png' }} style={styles.image} />
+                        <Image source={{ uri: 'https://cdn-icons-png.freepik.com/256/553/553983.png?semt=ais_hybrid' }} style={styles.image} />
                         <Text style={styles.textStyle}>Negocios</Text>
                     </Pressable>
 
@@ -59,7 +59,7 @@ export default function Catalogos() {
                     </Pressable>
                 </View>
 
-                <View style={styles.buttonContainer}>
+                <View style={styles.buttonContainer1}>
                 <Pressable
                     style={[styles.buttonCatalogo, styles.buttonAzul]}
                     onPress={() => handleCatalogos(Comun.codCatalogo.Movimientos)}>
@@ -74,6 +74,8 @@ export default function Catalogos() {
                     <Text style={styles.textStyle}>Localidades</Text>
                 </Pressable>
                 </View>
+
+                
 
             <Pressable style={styles.backButton} onPress={handleBack}>
                 <Text style={styles.backButtonText}>Regresar</Text>

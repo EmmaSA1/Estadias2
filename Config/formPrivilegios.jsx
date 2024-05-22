@@ -91,7 +91,7 @@ export default function formPrivilegios({ initialValues, onSubmit, action }) {
                     <View>
                         <Text style={styles.titleInput}>Nombre del Privilegio</Text>
                         <TextInput
-                            style={styles.input}
+                            style={styles.inputNombre}
                             onChangeText={formikProps.handleChange('Nombre')}
                             onBlur={formikProps.handleBlur('Nombre')}
                             placeholder="Nombre del Privilegio"
