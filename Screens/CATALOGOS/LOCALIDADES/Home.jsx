@@ -85,14 +85,12 @@ export default function Home() {
         { cod_localidad: '09', Localidad: 'Buenos ', Estados: 'Morelos', status: 'null' },
         { cod_localidad: '10', Localidad: 'Xochitepec', Estados: 'Morelos',status: 'null' },
         { cod_localidad: '11', Localidad: 'Xochitepec', Estados: 'Morelos',status: 'null' },
-
-
     ]);
 
     // Función para abrir el modal de edición y mostrar los datos del negocio
     const openEditModal = (cod_localidad) => {
         const datos = data.find(item => item.cod_localidad === cod_localidad);
-        setSelectedValues(datos); // Actualizar selectedValues con todos los datos del privilegio seleccionado
+        setSelectedValues(datos); // Actualizar selectedValues con todos los datos del negocio seleccionado
         setSelected(datos);
         setEditModalVisible(true);
         console.log(datos);
@@ -109,7 +107,16 @@ export default function Home() {
         // Actualiza los datos
         setData(newData);
 
-        console.log("Datos editados:", newData[index]);
+        // Verifica que el índice sea válido y que el estado exista
+        if (index !== -1 && newData[index].Estados) {  // Cambié 'estado' por 'Estados'
+            // Muestra el código y el estado en la consola
+            console.log("Datos editados:", { 
+                cod_localidad: newData[index].cod_localidad, 
+                estado: newData[index].Estados  // Cambié 'estado' por 'Estados'
+            });
+        } else {
+            console.log("No se encontró el negocio seleccionado o no tiene un estado asignado.");
+        }
     };
 
     // Función para poner baja
@@ -278,13 +285,13 @@ export default function Home() {
                                 style={styles.inputCodPriv}
                                 placeholder="Código privilegio"
                                 value={selected ? selected.cod_localidad : ''}
+                                editable={false}
                             />
                             <FormLocalidades onSubmit={handleSubmit} action={accion} initialValues={selectedValues} />
                         </ScrollView>
-                        
                     </View>
                 </View>
             </Modal>
-        </View >
+        </View>
     );
 }

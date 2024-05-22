@@ -1,9 +1,3 @@
-/*
- FRANCO HERNANDEZ ANGELUZ ABIMELEK y EMMANUEL SANTOS APAEZ 
- 11 de mayo de 2024 - 14 hrs
- Descripcion: Contiene el formulario de los privilegios
-*/
-
 import React from 'react';
 import { View, TextInput, Text, TouchableOpacity, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
@@ -23,8 +17,7 @@ const estadosDeMexico = [
     "Tlaxcala", "Veracruz", "Yucatán", "Zacatecas"
 ];
 
-export default function formLocalidades({ initialValues, onSubmit, action }) {
-
+export default function FormLocalidades({ initialValues, onSubmit, action }) {
     // Hook para la navegación
     const navigation = useNavigation();
 
@@ -97,7 +90,7 @@ export default function formLocalidades({ initialValues, onSubmit, action }) {
                 initialValues={initialValues}
                 validationSchema={validaciones}
                 onSubmit={(values) => handleButtonPress(values)}
-                >
+            >
                 {formikProps => (
                     <View>
                         <Text style={styles.titleInput}>Nombre de la localidad</Text>
@@ -116,7 +109,7 @@ export default function formLocalidades({ initialValues, onSubmit, action }) {
                         <View style={styles.inputNombre}>
                             <Picker
                                 selectedValue={formikProps.values.Estado}
-                                onValueChange={formikProps.handleChange('Estado')}
+                                onValueChange={(itemValue) => formikProps.setFieldValue('Estado', itemValue)}
                             >
                                 {estadosDeMexico.map((estado, index) => (
                                     <Picker.Item key={index} label={estado} value={estado} />
