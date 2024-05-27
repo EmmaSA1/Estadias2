@@ -20,7 +20,7 @@ export default function Agregar({ route }) {
         console.log('Datos del negocio:', data);
     };
 
-    const initialValues = { Nombre: '' };
+    const initialValues = { NOMBRE_PRIVILEGIO: '' };
 
     return (
         <View style={styles.container}>

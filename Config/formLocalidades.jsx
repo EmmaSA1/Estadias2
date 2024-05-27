@@ -23,8 +23,8 @@ export default function FormLocalidades({ initialValues, onSubmit, action }) {
 
     //aqui manejamos las validaciones
     const validaciones = Yup.object({
-        Localidad: Yup.string().required('Este campo es obligatorio'),
-        Estado: Yup.string().required('Este campo es obligatorio'),
+        LOCALIDAD: Yup.string().required('Este campo es obligatorio'),
+        ESTADOS: Yup.string().required('Este campo es obligatorio'),
     });
 
     const handleButtonPress = (values, event) => {
@@ -96,28 +96,28 @@ export default function FormLocalidades({ initialValues, onSubmit, action }) {
                         <Text style={styles.titleInput}>Nombre de la localidad</Text>
                         <TextInput
                             style={styles.inputNombre}
-                            onChangeText={formikProps.handleChange('Localidad')}
-                            onBlur={formikProps.handleBlur('Localidad')}
+                            onChangeText={formikProps.handleChange('LOCALIDAD')}
+                            onBlur={formikProps.handleBlur('LOCALIDAD')}
                             placeholder="Nombre de la localidad"
-                            value={formikProps.values.Localidad}
+                            value={formikProps.values.LOCALIDAD}
                         />
-                        {formikProps.touched.Localidad && formikProps.errors.Localidad && (
-                            <Text style={{ color: 'white' }}>{formikProps.errors.Localidad}</Text>
+                        {formikProps.touched.LOCALIDAD && formikProps.errors.LOCALIDAD && (
+                            <Text style={{ color: 'white' }}>{formikProps.errors.LOCALIDAD}</Text>
                         )}
 
                         <Text style={styles.titleInput}>Estado de la localidad</Text>
                         <View style={styles.inputNombre}>
                             <Picker
-                                selectedValue={formikProps.values.Estado}
-                                onValueChange={(itemValue) => formikProps.setFieldValue('Estado', itemValue)}
+                                selectedValue={formikProps.values.ESTADOS}
+                                onValueChange={(itemValue) => formikProps.setFieldValue('ESTADOS', itemValue)}
                             >
-                                {estadosDeMexico.map((estado, index) => (
-                                    <Picker.Item key={index} label={estado} value={estado} />
+                                {estadosDeMexico.map((ESTADOS, index) => (
+                                    <Picker.Item key={index} label={ESTADOS} value={ESTADOS} />
                                 ))}
                             </Picker>
                         </View>
-                        {formikProps.touched.Estado && formikProps.errors.Estado && (
-                            <Text style={{ color: 'white' }}>{formikProps.errors.Estado}</Text>
+                        {formikProps.touched.ESTADOS && formikProps.errors.ESTADOS && (
+                            <Text style={{ color: 'white' }}>{formikProps.errors.ESTADOS}</Text>
                         )}
 
                         <View style={styles.container4}>

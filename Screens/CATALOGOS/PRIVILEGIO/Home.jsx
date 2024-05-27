@@ -1,32 +1,31 @@
 /*
  FRANCO HERNANDEZ ANGELUZ ABIMELEK y EMMANUEL SANTOS APAEZ
  11 de mayo de 2024 - 14 hrs
- Descripcion: Contiene las La vista principal del catalogo
+ Descripcion: Contiene la vista principal del catálogo
 */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState     } from 'react';
 import { Text, View, ScrollView, Alert, Modal, Pressable, TextInput, TouchableOpacity } from "react-native";
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { styles } from "../../../Styles/Styles";
 import * as Comun from '../../../Config/Comun';
 import FormPrivilegios from '../../../Config/formPrivilegios';
 
-//Declaramos los valores iniciales del formulario 
+// Declaramos los valores iniciales del formulario
 const initialSelected = {
-    Nombre: ''
+    NOMBRE_PRIVILEGIO: ''
 };
 
 export default function Home() {
     // Hook para la navegación
     const navigation = useNavigation();
-    const route = useRoute();
 
-    // Hook para el modal de edición  
+    // Hook para el modal de edición
     const [editModalVisible, setEditModalVisible] = useState(false);
     // Hook para marcar el negocio seleccionado
     const [selected, setSelected] = useState(null);
-    // Hook para la barra de busqueda
+    // Hook para la barra de búsqueda
     const [searchTerm, setSearchTerm] = useState('');
     // Estado para la acción actual
     const [accion, setAccion] = useState('');
@@ -35,41 +34,37 @@ export default function Home() {
     const pageSize = 10;
     // Agregar estado para los valores del negocio seleccionado
     const [selectedValues, setSelectedValues] = useState(initialSelected);
-    // Hook para el filtro por status
-    const [statusFilter, setStatusFilter] = useState('null');
+    // Hook para el filtro por FECHA_BAJA
+    const [FECHA_BAJAFilter, setFECHA_BAJAFilter] = useState('null');
+    // Hook para el nombre de la empresa
+    const [empresa, setEmpresa] = useState('');
 
-        // Actualizar el nombre del negocio seleccionado al cargar la pantalla
-        useEffect(() => {
-            if (route.params?.selectedOption) {
-                nombre.setNombreNegocio(route.params.selectedOption);
-            }
-        }, [route.params?.selectedOption]);
 
     // Función para cambiar la acción cuando se presiona un botón
-    const handleAction = (accion, cod_privilegio) => {
-        setSelected(cod_privilegio);
+    const handleAction = (accion, COD_PRIVILEGIO) => {
+        setSelected(COD_PRIVILEGIO);
         setAccion(accion);
         console.log(accion);
 
         switch (accion) {
             case 13:
-                console.log("Agregar nuevo negocio");
+                console.log("Agregar nuevo privilegio");
                 navigation.replace('AgregarCatalogoPriv', { accion: accion });
                 break;
             case 10:
-                console.log("Consultar negocio");
+                console.log("Consultar privilegio");
                 break;
             case 11:
-                console.log("Dar de alta negocio");
+                console.log("Dar de alta privilegio");
                 quitarBaja(accion);
                 break;
             case 12:
-                console.log("Dar de baja negocio");
+                console.log("Dar de baja privilegio");
                 ponerBaja(accion);
                 break;
             case 14:
-                console.log("Editar negocio");
-                openEditModal(cod_privilegio);
+                console.log("Editar privilegio");
+                openEditModal(COD_PRIVILEGIO);
                 break;
             case 15:
                 console.log("GrupPriv");
@@ -80,39 +75,37 @@ export default function Home() {
         }
     };
 
-    //aqui van los datos se sustituira por la consulta a la base de datos
+    // Aquí van los datos, se sustituirá por la consulta a la base de datos
     const [data, setData] = useState([
-        { cod_privilegio: '01', Nombre: 'Perfumes Ian', status: 'null' },
-        { cod_privilegio: '02', Nombre: 'Soluciones T.I', status: 'null' },
-        { cod_privilegio: '03', Nombre: 'prueba1', status: 'null' },
-        { cod_privilegio: '04', Nombre: 'Soluciones T.I', status: 'null' },
-        { cod_privilegio: '05', Nombre: 'prueba1', status: 'null' },
-        { cod_privilegio: '06', Nombre: 'Soluciones T.I', status: 'null' },
-        { cod_privilegio: '07', Nombre: 'prueba1', status: 'null' },
-        { cod_privilegio: '08', Nombre: 'Estampa', status: '2004-04-12' },
-        { cod_privilegio: '09', Nombre: 'Roca', status: '2005-04-12' },
-        { cod_privilegio: '10', Nombre: 'Adios', status: '2006-04-12' },
-        { cod_privilegio: '11', Nombre: 'Adios', status: '2007-04-12' },
+        { COD_PRIVILEGIO: '01', NOMBRE_PRIVILEGIO: 'Perfumes Ian', FECHA_BAJA: null },
+        { COD_PRIVILEGIO: '02', NOMBRE_PRIVILEGIO: 'Soluciones T.I', FECHA_BAJA: null },
+        { COD_PRIVILEGIO: '03', NOMBRE_PRIVILEGIO: 'prueba1', FECHA_BAJA: null },
+        { COD_PRIVILEGIO: '04', NOMBRE_PRIVILEGIO: 'Soluciones T.I', FECHA_BAJA: null },
+        { COD_PRIVILEGIO: '05', NOMBRE_PRIVILEGIO: 'prueba1', FECHA_BAJA: null },
+        { COD_PRIVILEGIO: '06', NOMBRE_PRIVILEGIO: 'Soluciones T.I', FECHA_BAJA: null },
+        { COD_PRIVILEGIO: '07', NOMBRE_PRIVILEGIO: 'prueba1', FECHA_BAJA: null },
+        { COD_PRIVILEGIO: '08', NOMBRE_PRIVILEGIO: 'Estampa', FECHA_BAJA: null },
+        { COD_PRIVILEGIO: '09', NOMBRE_PRIVILEGIO: 'Roca', FECHA_BAJA: null },
+        { COD_PRIVILEGIO: '10', NOMBRE_PRIVILEGIO: 'Adios', FECHA_BAJA: null },
+        { COD_PRIVILEGIO: '11', NOMBRE_PRIVILEGIO: 'Adios', FECHA_BAJA: null },
     ]);
 
-
-     //función para abrir el modal de edición y mostrar los datos del negocio
-     const openEditModal = (cod_privilegio) => {
-        const datos = data.find(item => item.cod_privilegio === cod_privilegio);
+    // Función para abrir el modal de edición y mostrar los datos del privilegio
+    const openEditModal = (COD_PRIVILEGIO) => {
+        const datos = data.find(item => item.COD_PRIVILEGIO === COD_PRIVILEGIO);
         setSelectedValues(datos); // Actualizar selectedValues con todos los datos del privilegio seleccionado
         setSelected(datos);
         setEditModalVisible(true);
         console.log(datos);
     };
 
-
-     // Función para editar los datos del negocio
-     const handleEdit = (values) => {
-        // Encuentra el índice del negocio seleccionado
-        const index = data.findIndex(item => item.cod_privilegio === selected.cod_privilegio);
+    // Función para editar los datos del privilegio
+    const handleEdit = (values) => {
+        // Encuentra el índice del privilegio seleccionado
+        const index = data.findIndex(item => item.COD_PRIVILEGIO === selected.COD_PRIVILEGIO);
         // Crea una copia de los datos existentes
         const newData = [...data];
-        // Actualiza los datos del negocio seleccionado
+        // Actualiza los datos del privilegio seleccionado
         newData[index] = { ...newData[index], ...values };
         // Actualiza los datos
         setData(newData);
@@ -120,9 +113,8 @@ export default function Home() {
         console.log("Datos editados:", newData[index]);
     };
 
-
-      //funcion para poner baja
-      const ponerBaja = () => {
+    // Función para poner baja
+    const ponerBaja = () => {
         Alert.alert(
             "¿Estás seguro de asignar baja?",
             "Esta acción no se puede deshacer",
@@ -140,8 +132,7 @@ export default function Home() {
         );
     };
 
-
-    //funcion para quitar baja
+    // Función para quitar baja
     const quitarBaja = () => {
         Alert.alert(
             "¿Estás seguro de quitar baja?",
@@ -167,24 +158,21 @@ export default function Home() {
 
     const handleBack = () => {
         navigation.replace('Catalogos');
-
     };
 
-    
-    //funcion para mostrar la paguina anterior
+    // Función para mostrar la página anterior
     const handlePrevious = () => {
         if (page > 1) {
             setPage(page - 1);
         }
     };
 
-    //funcion para mostrar la siguiente paguina
+    // Función para mostrar la siguiente página
     const handleNext = () => {
         if ((page * pageSize) < data.length) {
             setPage(page + 1);
         }
     };
-
 
     return (
         <View style={styles.container}>
@@ -196,7 +184,7 @@ export default function Home() {
                     style={[styles.button, styles.buttonAzul]}
                     onPress={handleBack}
                 >
-                    <Text style={styles.textStyle}>Regrsear</Text>
+                    <Text style={styles.textStyle}>Regresar</Text>
                 </Pressable>
             </View>
             <View style={styles.container3}>
@@ -209,9 +197,9 @@ export default function Home() {
                     </Pressable>
                     <Pressable
                         style={[styles.button, styles.buttonAzul]}
-                        onPress={() => setStatusFilter(statusFilter === 'null' ? 'baja' : 'null')}
+                        onPress={() => setFECHA_BAJAFilter(FECHA_BAJAFilter === 'null' ? 'baja' : 'null')}
                     >
-                        <Text style={styles.textStyle}>{statusFilter === 'null' ? 'Bajas' : 'Vigentes'}</Text>
+                        <Text style={styles.textStyle}>{FECHA_BAJAFilter === 'null' ? 'Bajas' : 'Vigentes'}</Text>
                     </Pressable>
                     <Pressable
                         style={[styles.button, styles.buttonAzul]}
@@ -236,25 +224,25 @@ export default function Home() {
                         {data.filter((val) => {
                             if (searchTerm === '') {
                                 return val;
-                            } else if (val.Nombre.toLowerCase().includes(searchTerm.toLowerCase())) {
+                            } else if (val.NOMBRE_PRIVILEGIO.toLowerCase().includes(searchTerm.toLowerCase())) {
                                 return val;
                             }
                         })
-                            .filter((val) => statusFilter === 'null' ? val.status === 'null' : val.status !== 'null')
+                            .filter((val) => FECHA_BAJAFilter === 'null' ? val.FECHA_BAJA === 'null' : val.FECHA_BAJA !== 'null')
                             .slice((page - 1) * pageSize, page * pageSize)
                             .map((item, index) => (
                                 <View key={index} style={styles.Contenido}>
-                                    <Text style={styles.cell}>{item.Nombre}</Text>
+                                    <Text style={styles.cell}>{item.NOMBRE_PRIVILEGIO}</Text>
                                     <View style={styles.iconContainer}>
-                                        <TouchableOpacity onPress={() => handleAction(Comun.accion.Editar, item.cod_privilegio)}>
+                                        <TouchableOpacity onPress={() => handleAction(Comun.accion.Editar, item.COD_PRIVILEGIO)}>
                                             <Icon name="eye-outline" size={25} color="black" />
                                         </TouchableOpacity>
-                                        {statusFilter === 'baja' ? (
+                                        {FECHA_BAJAFilter === 'baja' ? (
                                             <TouchableOpacity onPress={() => handleAction(Comun.accion.Alta)}>
                                                 <Icon name="checkmark-outline" size={25} color="black" />
                                             </TouchableOpacity>
                                         ) : (
-                                            <TouchableOpacity onPress={() => handleAction(Comun.accion.Baja)} disabled={statusFilter === 'baja'}>
+                                            <TouchableOpacity onPress={() => handleAction(Comun.accion.Baja)} disabled={FECHA_BAJAFilter === 'baja'}>
                                                 <Icon name="trash-outline" size={25} color="black" />
                                             </TouchableOpacity>
                                         )}
@@ -289,13 +277,13 @@ export default function Home() {
                             <TextInput
                                 style={styles.inputCodPriv}
                                 placeholder="Código privilegio"
-                                value={selected ? selected.cod_privilegio : ''}
+                                value={selected ? selected.COD_PRIVILEGIO : ''}
                             />
                             <FormPrivilegios onSubmit={handleSubmit} action={accion} initialValues={selectedValues} />
                         </ScrollView>
                     </View>
                 </View>
             </Modal>
-        </View >
+        </View>
     );
 }

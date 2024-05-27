@@ -14,20 +14,20 @@ export default function listPriv() {
     const navigation = useNavigation();
     
     const [data, setData] = useState([
-        { cod_privilegio: '01', nombre: 'Privilegio 1', status: 'null' },
-        { cod_privilegio: '02', nombre: 'Privilegio 2', status: 'null' },
-        { cod_privilegio: '03', nombre: 'Privilegio 3', status: 'null' },
-        { cod_privilegio: '04', nombre: 'Privilegio 4', status: 'null' },
-        { cod_privilegio: '05', nombre: 'Privilegio 5', status: 'null' },
-        { cod_privilegio: '06', nombre: 'Privilegio 6', status: 'null' },
+        { COD_PRIVILEGIO: '01', NOMBRE_PRIVILEGIO: 'Privilegio 1', FECHA_BAJA: null },
+        { COD_PRIVILEGIO: '02', NOMBRE_PRIVILEGIO: 'Privilegio 2', FECHA_BAJA: null },
+        { COD_PRIVILEGIO: '03', NOMBRE_PRIVILEGIO: 'Privilegio 3', FECHA_BAJA: null },
+        { COD_PRIVILEGIO: '04', NOMBRE_PRIVILEGIO: 'Privilegio 4', FECHA_BAJA: null },
+        { COD_PRIVILEGIO: '05', NOMBRE_PRIVILEGIO: 'Privilegio 5', FECHA_BAJA: null },
+        { COD_PRIVILEGIO: '06', NOMBRE_PRIVILEGIO: 'Privilegio 6', FECHA_BAJA: null },
     ]);
 
     const [switchStates, setSwitchStates] = useState({});
 
-    const toggleSwitch = (cod_privilegio) => {
+    const toggleSwitch = (COD_PRIVILEGIO) => {
         setSwitchStates(prevState => ({
             ...prevState,
-            [cod_privilegio]: !prevState[cod_privilegio]
+            [COD_PRIVILEGIO]: !prevState[COD_PRIVILEGIO]
         }));
     };
 
@@ -40,13 +40,13 @@ export default function listPriv() {
                 </View>
                 {data.map((item, index) => (
                     <View key={index} style={styles.Contenido}>
-                        <Text style={styles.cell}>{item.nombre}</Text>
+                        <Text style={styles.cell}>{item.NOMBRE_PRIVILEGIO}</Text>
                         <Switch
                             trackColor={{ false: "#767577", true: "#81b0ff" }}
-                            thumbColor={switchStates[item.cod_privilegio] ? "#f5dd4b" : "#f4f3f4"}
+                            thumbColor={switchStates[item.COD_PRIVILEGIO] ? "#f5dd4b" : "#f4f3f4"}
                             ios_backgroundColor="#3e3e3e"
-                            onValueChange={() => toggleSwitch(item.cod_privilegio)}
-                            value={switchStates[item.cod_privilegio]}
+                            onValueChange={() => toggleSwitch(item.COD_PRIVILEGIO)}
+                            value={switchStates[item.COD_PRIVILEGIO]}
                         />
                     </View>
                 ))}

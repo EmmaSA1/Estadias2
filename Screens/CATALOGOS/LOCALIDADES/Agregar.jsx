@@ -20,7 +20,7 @@ export default function Agregar({ route }) {
         console.log('Datos del negocio:', data);
     };
 
-    const initialValues = { Localidad: '', Estado: '' };
+    const initialValues = { LOCALIDAD: '', ESTADOS: '' };
 
     return (
         <View style={styles.container}>

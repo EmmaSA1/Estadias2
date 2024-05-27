@@ -20,7 +20,7 @@ export default function formPrivilegios({ initialValues, onSubmit, action }) {
 
     //aqui manejamos las validaciones
     const validaciones = Yup.object({
-        Nombre: Yup.string().required('Este campo es obligatorio'),
+        NOMBRE_PRIVILEGIO: Yup.string().required('Este campo es obligatorio'),
     });
 
     const handleButtonPress = (values, event) => {
@@ -92,13 +92,13 @@ export default function formPrivilegios({ initialValues, onSubmit, action }) {
                         <Text style={styles.titleInput}>Nombre del Privilegio</Text>
                         <TextInput
                             style={styles.inputNombre}
-                            onChangeText={formikProps.handleChange('Nombre')}
-                            onBlur={formikProps.handleBlur('Nombre')}
+                            onChangeText={formikProps.handleChange('NOMBRE_PRIVILEGIO')}
+                            onBlur={formikProps.handleBlur('NOMBRE_PRIVILEGIO')}
                             placeholder="Nombre del Privilegio"
-                            value={formikProps.values.Nombre}
+                            value={formikProps.values.NOMBRE_PRIVILEGIO}
                         />
-                        {formikProps.touched.Nombre && formikProps.errors.Nombre &&
-                            <Text style={{ color: 'white' }}>{formikProps.errors.Nombre}</Text>
+                        {formikProps.touched.NOMBRE_PRIVILEGIO && formikProps.errors.NOMBRE_PRIVILEGIO &&
+                            <Text style={{ color: 'white' }}>{formikProps.errors.NOMBRE_PRIVILEGIO}</Text>
                         }
 
                         <View style={styles.container4}>

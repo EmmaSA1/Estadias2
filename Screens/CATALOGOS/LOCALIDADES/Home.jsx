@@ -8,14 +8,13 @@ import FormLocalidades from '../../../Config/formLocalidades';
 
 // Declaramos los valores iniciales del formulario 
 const initialSelected = {
-    Localidad: '',
-    Estados: ''
+    LOCALIDAD: '',
+    ESTADOS: ''
 };
 
 export default function Home() {
     // Hook para la navegación
     const navigation = useNavigation();
-    const route = useRoute();
 
     // Hook para el modal de edición  
     const [editModalVisible, setEditModalVisible] = useState(false);
@@ -30,19 +29,14 @@ export default function Home() {
     const pageSize = 10;
     // Agregar estado para los valores del negocio seleccionado
     const [selectedValues, setSelectedValues] = useState(initialSelected);
-    // Hook para el filtro por status
-    const [statusFilter, setStatusFilter] = useState('null');
+    // Hook para el filtro por FECHA_BAJA
+    const [FECHA_BAJAFilter, setFECHA_BAJAFilter] = useState('null');
 
-    // Actualizar el nombre del negocio seleccionado al cargar la pantalla
-    useEffect(() => {
-        if (route.params?.selectedOption) {
-            nombre.setNombreNegocio(route.params.selectedOption);
-        }
-    }, [route.params?.selectedOption]);
+   
 
     // Función para cambiar la acción cuando se presiona un botón
-    const handleAction = (accion, cod_localidad) => {
-        setSelected(cod_localidad);
+    const handleAction = (accion, COD_LOCALIDAD) => {
+        setSelected(COD_LOCALIDAD);
         setAccion(accion);
         console.log(accion);
 
@@ -64,7 +58,7 @@ export default function Home() {
                 break;
             case 14:
                 console.log("Editar negocio");
-                openEditModal(cod_localidad);
+                openEditModal(COD_LOCALIDAD);
                 break;
             
             default:
@@ -74,22 +68,22 @@ export default function Home() {
 
     // Aquí van los datos, se sustituirá por la consulta a la base de datos
     const [data, setData] = useState([
-        { cod_localidad: '01', Localidad: 'Xochitepec', Estados: 'Morelos',status: 'null' },
-        { cod_localidad: '02', Localidad: 'Tezoyuca', Estados: 'Morelos', status: 'null' },
-        { cod_localidad: '03', Localidad: 'Cuernavaca', Estados: 'Morelos', status: 'null' },
-        { cod_localidad: '04', Localidad: 'Temixco', Estados: 'Morelos', status: 'null' },
-        { cod_localidad: '05', Localidad: 'Cuernavaca', Estados: 'Morelos', status: 'null' },
-        { cod_localidad: '06', Localidad: 'Puente', Estados: 'Morelos', status: 'null' },
-        { cod_localidad: '07', Localidad: 'Zapata', Estados: 'Morelos', status: 'null' },
-        { cod_localidad: '08', Localidad: 'Xochimilco', Estados: 'Morelos', status: 'null' },
-        { cod_localidad: '09', Localidad: 'Buenos ', Estados: 'Morelos', status: 'null' },
-        { cod_localidad: '10', Localidad: 'Xochitepec', Estados: 'Morelos',status: 'null' },
-        { cod_localidad: '11', Localidad: 'Xochitepec', Estados: 'Morelos',status: 'null' },
+        { COD_LOCALIDAD: '01', LOCALIDAD: 'Xochitepec', ESTADOS: 'Morelos',FECHA_BAJA: null },
+        { COD_LOCALIDAD: '02', LOCALIDAD: 'Tezoyuca', ESTADOS: 'Morelos', FECHA_BAJA: null },
+        { COD_LOCALIDAD: '03', LOCALIDAD: 'Cuernavaca', ESTADOS: 'Morelos', FECHA_BAJA: null },
+        { COD_LOCALIDAD: '04', LOCALIDAD: 'Temixco', ESTADOS: 'Morelos', FECHA_BAJA: null },
+        { COD_LOCALIDAD: '05', LOCALIDAD: 'Cuernavaca', ESTADOS: 'Morelos', FECHA_BAJA: null },
+        { COD_LOCALIDAD: '06', LOCALIDAD: 'Puente', ESTADOS: 'Morelos', FECHA_BAJA: null },
+        { COD_LOCALIDAD: '07', LOCALIDAD: 'Zapata', ESTADOS: 'Morelos', FECHA_BAJA: null },
+        { COD_LOCALIDAD: '08', LOCALIDAD: 'Xochimilco', ESTADOS: 'Morelos', FECHA_BAJA: null },
+        { COD_LOCALIDAD: '09', LOCALIDAD: 'Buenos ', ESTADOS: 'Morelos', FECHA_BAJA: null },
+        { COD_LOCALIDAD: '10', LOCALIDAD: 'Xochitepec', ESTADOS: 'Morelos',FECHA_BAJA: null },
+        { COD_LOCALIDAD: '11', LOCALIDAD: 'Xochitepec', ESTADOS: 'Morelos',FECHA_BAJA: null },
     ]);
 
     // Función para abrir el modal de edición y mostrar los datos del negocio
-    const openEditModal = (cod_localidad) => {
-        const datos = data.find(item => item.cod_localidad === cod_localidad);
+    const openEditModal = (COD_LOCALIDAD) => {
+        const datos = data.find(item => item.COD_LOCALIDAD === COD_LOCALIDAD);
         setSelectedValues(datos); // Actualizar selectedValues con todos los datos del negocio seleccionado
         setSelected(datos);
         setEditModalVisible(true);
@@ -99,7 +93,7 @@ export default function Home() {
     // Función para editar los datos de la localidad
     const handleEdit = (values) => {
         // Encuentra el índice del negocio seleccionado
-        const index = data.findIndex(item => item.cod_localidad === selected.cod_localidad);
+        const index = data.findIndex(item => item.COD_LOCALIDAD === selected.COD_LOCALIDAD);
         // Crea una copia de los datos existentes
         const newData = [...data];
         // Actualiza los datos del negocio seleccionado
@@ -108,11 +102,11 @@ export default function Home() {
         setData(newData);
 
         // Verifica que el índice sea válido y que el estado exista
-        if (index !== -1 && newData[index].Estados) {  // Cambié 'estado' por 'Estados'
+        if (index !== -1 && newData[index].ESTADOS) {  // Cambié 'estado' por 'ESTADOS'
             // Muestra el código y el estado en la consola
             console.log("Datos editados:", { 
-                cod_localidad: newData[index].cod_localidad, 
-                estado: newData[index].Estados  // Cambié 'estado' por 'Estados'
+                COD_LOCALIDAD: newData[index].COD_LOCALIDAD, 
+                estado: newData[index].ESTADOS  // Cambié 'estado' por 'ESTADOS'
             });
         } else {
             console.log("No se encontró el negocio seleccionado o no tiene un estado asignado.");
@@ -203,9 +197,9 @@ export default function Home() {
                     </Pressable>
                     <Pressable
                         style={[styles.button, styles.buttonAzul]}
-                        onPress={() => setStatusFilter(statusFilter === 'null' ? 'baja' : 'null')}
+                        onPress={() => setFECHA_BAJAFilter(FECHA_BAJAFilter === 'null' ? 'baja' : 'null')}
                     >
-                        <Text style={styles.textStyle}>{statusFilter === 'null' ? 'Bajas' : 'Vigentes'}</Text>
+                        <Text style={styles.textStyle}>{FECHA_BAJAFilter === 'null' ? 'Bajas' : 'Vigentes'}</Text>
                     </Pressable>
                 </View>
                 <View style={styles.table}>
@@ -220,7 +214,7 @@ export default function Home() {
 
                     <View style={styles.Encabezados}>
                         <Text style={styles.Titulo}>Localidad</Text>
-                        <Text style={styles.Titulo}>   Estados</Text>
+                        <Text style={styles.Titulo}>  Estados</Text>
                         <Text style={styles.TituloAcciones}>ACCIONES</Text>
                     </View>
 
@@ -228,28 +222,28 @@ export default function Home() {
                         {data.filter((val) => {
                             if (searchTerm === '') {
                                 return val;
-                            } else if (val.Localidad.toLowerCase().includes(searchTerm.toLowerCase())) {
+                            } else if (val.LOCALIDAD.toLowerCase().includes(searchTerm.toLowerCase())) {
                                 return val;
-                            } else if (val.Estados.toLowerCase().includes(searchTerm.toLowerCase())) {
+                            } else if (val.ESTADOS.toLowerCase().includes(searchTerm.toLowerCase())) {
                                 return val;
                             }
                         })
-                            .filter((val) => statusFilter === 'null' ? val.status === 'null' : val.status !== 'null')
+                            .filter((val) => FECHA_BAJAFilter === 'null' ? val.FECHA_BAJA === 'null' : val.FECHA_BAJA !== 'null')
                             .slice((page - 1) * pageSize, page * pageSize)
                             .map((item, index) => (
                                 <View key={index} style={styles.Contenido}>
-                                    <Text style={styles.cell}>{item.Localidad}</Text>
-                                    <Text style={styles.cell}>{item.Estados}</Text>
+                                    <Text style={styles.cell}>{item.LOCALIDAD}</Text>
+                                    <Text style={styles.cell}>{item.ESTADOS}</Text>
                                     <View style={styles.iconContainer}>
-                                        <TouchableOpacity onPress={() => handleAction(Comun.accion.Editar, item.cod_localidad)}>
+                                        <TouchableOpacity onPress={() => handleAction(Comun.accion.Editar, item.COD_LOCALIDAD)}>
                                             <Icon name="eye-outline" size={25} color="black" />
                                         </TouchableOpacity>
-                                        {statusFilter === 'baja' ? (
+                                        {FECHA_BAJAFilter === 'baja' ? (
                                             <TouchableOpacity onPress={() => handleAction(Comun.accion.Alta)}>
                                                 <Icon name="checkmark-outline" size={25} color="black" />
                                             </TouchableOpacity>
                                         ) : (
-                                            <TouchableOpacity onPress={() => handleAction(Comun.accion.Baja)} disabled={statusFilter === 'baja'}>
+                                            <TouchableOpacity onPress={() => handleAction(Comun.accion.Baja)} disabled={FECHA_BAJAFilter === 'baja'}>
                                                 <Icon name="trash-outline" size={25} color="black" />
                                             </TouchableOpacity>
                                         )}
@@ -284,7 +278,7 @@ export default function Home() {
                             <TextInput
                                 style={styles.inputCodPriv}
                                 placeholder="Código privilegio"
-                                value={selected ? selected.cod_localidad : ''}
+                                value={selected ? selected.COD_LOCALIDAD : ''}
                                 editable={false}
                             />
                             <FormLocalidades onSubmit={handleSubmit} action={accion} initialValues={selectedValues} />
