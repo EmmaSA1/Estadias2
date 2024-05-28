@@ -1,26 +1,27 @@
 /*
- FRANCO HERNANDEZ ANGELUZ ABIMELEK y EMMANUEL SANTOS APAEZ 
- 11 de mayo de 2024 - 14 hrs
- Descripcion: Contiene el formulario de los privilegios
+ FRANCO HERNANDEZ ANGELUZ ABIMELEK
+ 26 de abril de 2024 - 16 hrs
+ Descripcion: Contiene el formulario de los negocios
 */
 
 import React from 'react';
 import { View, TextInput, Text, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { styles } from "../Styles/Styles";
+import { styles } from "../../Styles/Styles";
 
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-export default function formPrivilegios({ initialValues, onSubmit, action }) {
+export default function formMovimientos({ initialValues, onSubmit, action }) {
 
     // Hook para la navegación
     const navigation = useNavigation();
 
     //aqui manejamos las validaciones
     const validaciones = Yup.object({
-        NOMBRE_PRIVILEGIO: Yup.string().required('Este campo es obligatorio'),
+        DESCRIPCION: Yup.string().required('Este campo es obligatorio'),
+        SIGNO: Yup.string().required('Este campo es obligatorio'),
     });
 
     const handleButtonPress = (values, event) => {
@@ -29,7 +30,7 @@ export default function formPrivilegios({ initialValues, onSubmit, action }) {
             // Mostrar una alerta indicando que los campos son obligatorios
             Alert.alert(
                 'Error',
-                'Por favor completa todos los campos antes de agregar el privilegio.',
+                'Por favor completa todos los campos antes de agregar el movimiento.',
                 [
                     { text: 'OK', onPress: () => console.log('Alerta cerrada') }
                 ],
@@ -38,7 +39,7 @@ export default function formPrivilegios({ initialValues, onSubmit, action }) {
         } else if (action === 13) {
             Alert.alert(
                 'Confirmar',
-                '¿Estás seguro de que deseas agregar este negocio?',
+                '¿Estás seguro de que deseas agregar este movimiento?',
                 [
                     {
                         text: 'Cancelar',
@@ -49,7 +50,7 @@ export default function formPrivilegios({ initialValues, onSubmit, action }) {
                         onPress: () => {
                             event.persist();
                             onSubmit(values);
-                            navigation.navigate('SplashCatalogoPriv', { accion: action });
+                            navigation.navigate('SplashCatalogoMov', { accion: action });
                         },
                     },
                 ],
@@ -58,7 +59,7 @@ export default function formPrivilegios({ initialValues, onSubmit, action }) {
         } else if (action === 14) {
             Alert.alert(
                 'Confirmar',
-                '¿Estás seguro de que deseas editar este negocio?',
+                '¿Estás seguro de que deseas editar este movimiento?',
                 [
                     {
                         text: 'Cancelar',
@@ -69,7 +70,7 @@ export default function formPrivilegios({ initialValues, onSubmit, action }) {
                         onPress: () => {
                             event.persist();
                             onSubmit(values);
-                            navigation.navigate('SplashCatalogoPriv', { accion: action });
+                            navigation.navigate('SplashCatalogoMov', { accion: action });
                         },
                     },
                 ],
@@ -89,22 +90,34 @@ export default function formPrivilegios({ initialValues, onSubmit, action }) {
             >
                 {formikProps => (
                     <View>
-                        <Text style={styles.titleInput}>Nombre del Privilegio</Text>
+                        <Text style={styles.titleInput}>Descripcion</Text>
                         <TextInput
-                            style={styles.inputNombre}
-                            onChangeText={formikProps.handleChange('NOMBRE_PRIVILEGIO')}
-                            onBlur={formikProps.handleBlur('NOMBRE_PRIVILEGIO')}
-                            placeholder="Nombre del Privilegio"
-                            value={formikProps.values.NOMBRE_PRIVILEGIO}
+                            style={styles.input}
+                            onChangeText={formikProps.handleChange('DESCRIPCION')}
+                            onBlur={formikProps.handleBlur('DESCRIPCION')}
+                            placeholder="Descripcion del movimiento"
+                            value={formikProps.values.DESCRIPCION}
                         />
-                        {formikProps.touched.NOMBRE_PRIVILEGIO && formikProps.errors.NOMBRE_PRIVILEGIO &&
-                            <Text style={{ color: 'white' }}>{formikProps.errors.NOMBRE_PRIVILEGIO}</Text>
+                        {formikProps.touched.DESCRIPCION && formikProps.errors.DESCRIPCION &&
+                            <Text style={styles.error}>{formikProps.errors.DESCRIPCION}</Text>
+                        }
+
+                        <Text style={styles.titleInput}>Signo</Text>
+                        <TextInput
+                            style={styles.input}
+                            onChangeText={formikProps.handleChange('SIGNO')}
+                            onBlur={formikProps.handleBlur('SIGNO')}
+                            placeholder="Signo del movimiento"
+                            value={formikProps.values.SIGNO}
+                        />
+                        {formikProps.touched.SIGNO && formikProps.errors.SIGNO &&
+                            <Text style={styles.error}>{formikProps.errors.SIGNO}</Text>
                         }
 
                         <View style={styles.container4}>
                             <TouchableOpacity
                                 style={[styles.button, styles.buttonRojo]}
-                                onPress={() => navigation.replace("HomeCatalogoPriv")}
+                                onPress={() => navigation.replace('HomeCatalogoMov')}
                             >
                                 <Text style={styles.textStyle}>Cancelar</Text>
                             </TouchableOpacity>
@@ -119,5 +132,5 @@ export default function formPrivilegios({ initialValues, onSubmit, action }) {
                 )}
             </Formik>
         </View>
-    )
+    );
 }

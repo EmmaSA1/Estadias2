@@ -1,30 +1,26 @@
+/*
+ FRANCO HERNANDEZ ANGELUZ ABIMELEK y EMMANUEL SANTOS APAEZ 
+ 11 de mayo de 2024 - 14 hrs
+ Descripcion: Contiene el formulario de los privilegios
+*/
+
 import React from 'react';
 import { View, TextInput, Text, TouchableOpacity, Alert } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
-
 import { useNavigation } from '@react-navigation/native';
 
-import { styles } from "../Styles/Styles";
+import { styles } from "../../Styles/Styles";
 
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-const estadosDeMexico = [
-    "Aguascalientes", "Baja California", "Baja California Sur", "Campeche", "Chiapas", "Chihuahua", 
-    "Ciudad de México", "Coahuila", "Colima", "Durango", "Estado de México", "Guanajuato", "Guerrero", 
-    "Hidalgo", "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca", "Puebla", 
-    "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa", "Sonora", "Tabasco", "Tamaulipas", 
-    "Tlaxcala", "Veracruz", "Yucatán", "Zacatecas"
-];
+export default function formPrivilegios({ initialValues, onSubmit, action }) {
 
-export default function FormLocalidades({ initialValues, onSubmit, action }) {
     // Hook para la navegación
     const navigation = useNavigation();
 
     //aqui manejamos las validaciones
     const validaciones = Yup.object({
-        LOCALIDAD: Yup.string().required('Este campo es obligatorio'),
-        ESTADOS: Yup.string().required('Este campo es obligatorio'),
+        Nombre: Yup.string().required('Este campo es obligatorio'),
     });
 
     const handleButtonPress = (values, event) => {
@@ -53,7 +49,7 @@ export default function FormLocalidades({ initialValues, onSubmit, action }) {
                         onPress: () => {
                             event.persist();
                             onSubmit(values);
-                            navigation.navigate('SplashCatalogoLoc', { accion: action });
+                            navigation.navigate('SplashCatalogoPriv', { accion: action });
                         },
                     },
                 ],
@@ -73,7 +69,7 @@ export default function FormLocalidades({ initialValues, onSubmit, action }) {
                         onPress: () => {
                             event.persist();
                             onSubmit(values);
-                            navigation.navigate('SplashCatalogoLoc', { accion: action });
+                            navigation.navigate('SplashCatalogoPriv', { accion: action });
                         },
                     },
                 ],
@@ -93,37 +89,22 @@ export default function FormLocalidades({ initialValues, onSubmit, action }) {
             >
                 {formikProps => (
                     <View>
-                        <Text style={styles.titleInput}>Nombre de la localidad</Text>
+                        <Text style={styles.titleInput}>Nombre del Privilegio</Text>
                         <TextInput
-                            style={styles.inputNombre}
-                            onChangeText={formikProps.handleChange('LOCALIDAD')}
-                            onBlur={formikProps.handleBlur('LOCALIDAD')}
-                            placeholder="Nombre de la localidad"
-                            value={formikProps.values.LOCALIDAD}
+                            style={styles.input}
+                            onChangeText={formikProps.handleChange('Nombre')}
+                            onBlur={formikProps.handleBlur('Nombre')}
+                            placeholder="Nombre del Privilegio"
+                            value={formikProps.values.Nombre}
                         />
-                        {formikProps.touched.LOCALIDAD && formikProps.errors.LOCALIDAD && (
-                            <Text style={{ color: 'white' }}>{formikProps.errors.LOCALIDAD}</Text>
-                        )}
-
-                        <Text style={styles.titleInput}>Estado de la localidad</Text>
-                        <View style={styles.inputNombre}>
-                            <Picker
-                                selectedValue={formikProps.values.ESTADOS}
-                                onValueChange={(itemValue) => formikProps.setFieldValue('ESTADOS', itemValue)}
-                            >
-                                {estadosDeMexico.map((ESTADOS, index) => (
-                                    <Picker.Item key={index} label={ESTADOS} value={ESTADOS} />
-                                ))}
-                            </Picker>
-                        </View>
-                        {formikProps.touched.ESTADOS && formikProps.errors.ESTADOS && (
-                            <Text style={{ color: 'white' }}>{formikProps.errors.ESTADOS}</Text>
-                        )}
+                        {formikProps.touched.Nombre && formikProps.errors.Nombre &&
+                            <Text style={{ color: 'white' }}>{formikProps.errors.Nombre}</Text>
+                        }
 
                         <View style={styles.container4}>
                             <TouchableOpacity
                                 style={[styles.button, styles.buttonRojo]}
-                                onPress={() => navigation.replace("HomeCatalogoLoc")}
+                                onPress={() => navigation.replace("HomeCatalogoPriv")}
                             >
                                 <Text style={styles.textStyle}>Cancelar</Text>
                             </TouchableOpacity>
@@ -138,5 +119,5 @@ export default function FormLocalidades({ initialValues, onSubmit, action }) {
                 )}
             </Formik>
         </View>
-    );
+    )
 }

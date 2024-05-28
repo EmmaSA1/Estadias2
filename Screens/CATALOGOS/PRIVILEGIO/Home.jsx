@@ -10,7 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { styles } from "../../../Styles/Styles";
 import * as Comun from '../../../Config/Comun';
-import FormPrivilegios from '../../../Config/formPrivilegios';
+import FormPrivilegios from '../../../Config/Formularios/formPrivilegios';
 
 // Declaramos los valores iniciales del formulario
 const initialSelected = {

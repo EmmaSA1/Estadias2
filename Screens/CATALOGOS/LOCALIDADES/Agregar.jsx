@@ -10,7 +10,7 @@ import { View, Text, ScrollView } from "react-native";
 
 import { styles } from "../../../Styles/Styles";
 import * as Comun from '../../../Config/Comun';
-import FormPrivilegios from '../../../Config/formLocalidades';
+import FormPrivilegios from '../../../Config/Formularios/formLocalidades';
 
 
 export default function Agregar({ route }) {

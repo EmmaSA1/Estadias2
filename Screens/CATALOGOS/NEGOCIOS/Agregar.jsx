@@ -6,10 +6,9 @@
 
 import React from 'react';
 import { View, Text, ScrollView } from 'react-native';
-
 import { styles } from '../../../Styles/Styles';
 import * as Comun from '../../../Config/Comun';
-import FormNegocios from '../../../Config/formNegocios';
+import FormNegocios from '../../../Config/Formularios/formNegocios';
 
 export default function Agregar({ route }) {
     const { accion } = route.params;
@@ -19,19 +18,19 @@ export default function Agregar({ route }) {
     };
 
     const initialValues = {
-        Nombre: '',
-        Giro: '',
-        Direccion: '',
-        TelefonoOficina: '',
-        TelefonoCelular: '',
-        Email: '',
-        Logotipo: ''
+        NOMBRE: '',
+        GIRO: '',
+        DIRECCION: '',
+        TELEFONO_OFICINA: '',
+        TELEFONO_CELULAR: '',
+        E_MAIL: '',
+        LOGOTIPO: ''
     };
 
     return (
         <View style={styles.container}>
             <View style={styles.containerHeader}>
-                <Text style={styles.nombreNegocio}>{Comun.nombreNegocio.Soluciones}</Text>
+                <Text style={styles.nombreNegocio}>{Comun.nombreNegocio.nombre}</Text>
             </View>
             <Text style={styles.headerTitulo}>Agregar {Comun.nombreCatalogo[100]}</Text>
             <View style={styles.container6}>

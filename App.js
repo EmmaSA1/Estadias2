@@ -21,6 +21,9 @@ import HomeCatalogoLoc from "./Screens/CATALOGOS/LOCALIDADES/Home";
 import AgregarCatalogoLoc from "./Screens/CATALOGOS/LOCALIDADES/Agregar";
 import SplashCatalogoLoc from "./Screens/CATALOGOS/LOCALIDADES/Splash";
 
+import HomeCatalogoMov from "./Screens/CATALOGOS/MOVIMIENTOS/Home";
+import AgregarCatalogoMov from "./Screens/CATALOGOS/MOVIMIENTOS/Agregar";
+import SplashCatalogoMov from "./Screens/CATALOGOS/MOVIMIENTOS/Splash";
 
 //import GrupPriv from "./Screens/GrupPriv";
 
