@@ -11,14 +11,41 @@ import { View, Text, ScrollView } from "react-native";
 import { styles } from "../../../Styles/Styles";
 import * as Comun from '../../../Config/Comun';
 import FormPrivilegios from '../../../Config/Formularios/formPrivilegios';
+import { Backend } from "../../../Config/Conexion/backendConfig";
 
 
 export default function Agregar({ route }) {
     const { accion } = route.params;
+    const { url } = Backend();
 
-    const handleSubmit = (data) => {
-        console.log('Datos del negocio:', data);
+
+    const handleSubmit = async (data) => {
+        try {
+            // Enviar solicitud POST para insertar el privilegio
+            const response = await fetch(`${url}/privilegio/insertarprivilegio.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+            // Convertir la respuesta en JSON
+            const result = await response.json();
+            // Verificar si la operación fue exitosa
+            if (response.ok && result.success) {
+                console.log('Datos del privilegio:', data);
+                Alert.alert('Éxito', 'Privilegio insertado correctamente.');
+            } else {
+                console.error('Error:', result.message);
+                Alert.alert('Error', result.message || 'Hubo un problema al insertar el privilegio.');
+            }
+        } catch (error) {
+            // Manejar cualquier error que ocurra durante la solicitud
+            console.error('Error al insertar privilegio:', error);
+            Alert.alert('Error', 'Hubo un problema al insertar el privilegio.');
+        }
     };
+    
 
     const initialValues = { NOMBRE_PRIVILEGIO: '' };
 

@@ -5,7 +5,7 @@
 */
 
 import React from 'react';
-import { View, ScrollView, TextInput, TouchableOpacity, Button, Text, Image } from 'react-native';
+import { View, ScrollView, TouchableOpacity, Text, Image, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native'
 import { styles } from '../../Styles/Styles';
 
@@ -15,11 +15,13 @@ export default function Login() {
 
   const handleButtonPress = () => {
     navigation.navigate('Catalogos');
+  };
 
+  const handleBack = () => {
+    navigation.replace('Filter');
   };
 
   return (
-  
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
       <View style={styles.container}>
         <Text style={styles.title2}>Áreas</Text>
@@ -33,14 +35,18 @@ export default function Login() {
         </View>
 
         <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.buttonWrapper} onPress={() => null}>
-            <Image source={{ uri: 'https://cdn-icons-png.freepik.com/512/3094/3094836.png' }} 
-            style={styles.imagePag} />
+          <TouchableOpacity style={styles.buttonWrapper} onPress={() => null}>
+            <Image source={{ uri: 'https://cdn-icons-png.freepik.com/512/3094/3094836.png' }}
+              style={styles.imagePag} />
             <Text style={styles.buttonText}>Reportes</Text>
           </TouchableOpacity>
         </View>
+
+        <Pressable style={styles.backButtonPrin} onPress={handleBack}>
+          <Text style={styles.backButtonText}>Regresar</Text>
+        </Pressable>
+
       </View>
     </ScrollView>
   );
-
 };

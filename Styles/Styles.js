@@ -670,6 +670,15 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 
+  backButtonPrin: {
+    flexDirection: "row",
+   justifyContent: "space-around",
+   alignItems: "center",
+   width: "57%",
+   marginBottom: 50,
+   fontWeight: "bold",
+ },
+
   backButtonText: {
     borderRadius: 20,
     padding: 10,

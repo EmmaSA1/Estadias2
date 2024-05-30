@@ -1,6 +1,6 @@
 /*
- FRANCO HERNANDEZ ANGELUZ ABIMELEK Y EMMANUEL SANTOS APAEZ
- 11 de mayo de 2024 - 14 hrs
+EMMANUEL SANTOS APAEZ
+ 21 de mayo de 2024 - 14 hrs
  Descripcion: Contiene la pantalla de carga de la aplicación
 */
 

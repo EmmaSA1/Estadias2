@@ -62,11 +62,11 @@ export default function Home() {
                 break;
             case 11:
                 console.log("Dar de alta negocio");
-                QuitarBaja(accion);
+                QuitarBaja(COD_NEGOCIO);
                 break;
             case 12:
                 console.log("Dar de baja negocio");
-                PonerBaja(accion);
+                PonerBaja(COD_NEGOCIO);
                 break;
             case 14:
                 console.log("Editar negocio");
@@ -78,8 +78,9 @@ export default function Home() {
 
     };
 
+
     useEffect(() => {
-        fetch(`${url}serviciosNegocio.php?estado=${statusFilter === 'null' ? 'VIGENTES' : 'NO VIGENTES'}`)
+        fetch(`${url}/Negocios/regresarNegocios.php?estado=${statusFilter === 'null' ? 'VIGENTES' : 'NO VIGENTES'}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Error al obtener los negocios');
@@ -94,6 +95,8 @@ export default function Home() {
                 console.error('Error al obtener negocios:', error);
             });
     }, [statusFilter]);
+
+
 
     //funcion para mostrar la paguina anterior
     const handlePrevious = () => {
@@ -132,7 +135,7 @@ export default function Home() {
         console.log("Datos editados:", newData[index]);
     };
 
-    const PonerBaja = () => {
+    const PonerBaja = (cod_negocio) => {
         Alert.alert(
             "¿Estás seguro de asignar baja?",
             "Esta acción no se puede deshacer",
@@ -145,14 +148,35 @@ export default function Home() {
                 {
                     text: "Sí",
                     onPress: () => {
-                        navigation.navigate('SplashCatalogoNeg', { accion: Comun.accion.Baja });
+                        fetch(`${url}/Negocios/bajaNegocio.php`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ cod_negocio })
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    navigation.replace('SplashCatalogoNeg', { accion: Comun.accion.Baja });
+                                } else {
+                                    Alert.alert("Error", data.message || "Error al dar de baja el negocio.");
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                Alert.alert("Error", "Ocurrió un error al realizar la operación.");
+                            });
                     }
                 }
             ]
         );
     };
 
-    const QuitarBaja = () => {
+
+
+    
+    const QuitarBaja = (cod_negocio) => {
         Alert.alert(
             "¿Estás seguro de quitar baja?",
             "Esta acción no se puede deshacer",
@@ -165,12 +189,31 @@ export default function Home() {
                 {
                     text: "Sí",
                     onPress: () => {
-                        navigation.navigate('SplashCatalogoNeg', { accion: Comun.accion.Alta });
+                        fetch(`${url}/Negocios/altaNegocio.php`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ cod_negocio })
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    navigation.replace('SplashCatalogoNeg', { accion: Comun.accion.Alta });
+                                } else {
+                                    Alert.alert("Error", data.message || "Error al dar de alta el negocio.");
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                Alert.alert("Error", "Ocurrió un error al realizar la operación.");
+                            });
                     }
                 }
             ]
         );
     };
+
 
     const handleSubmit = (values) => {
         handleEdit(values); // Pasa los valores al manejo de la edición
@@ -244,13 +287,11 @@ export default function Home() {
                                             <Icon name="eye-outline" size={25} color="black" />
                                         </TouchableOpacity>
                                         {statusFilter === 'baja' ? (
-                                            <TouchableOpacity
-                                                onPress={() => handleAction(Comun.accion.Alta)}
-                                            >
+                                            <TouchableOpacity onPress={() => handleAction(Comun.accion.Alta, item.COD_NEGOCIO)}>
                                                 <Icon name="checkmark-outline" size={25} color="black" />
                                             </TouchableOpacity>
                                         ) : (
-                                            <TouchableOpacity onPress={() => handleAction(Comun.accion.Baja)} disabled={statusFilter === 'baja'}>
+                                            <TouchableOpacity onPress={() => handleAction(Comun.accion.Baja, item.COD_NEGOCIO)} disabled={statusFilter === 'baja'}>
                                                 <Icon name="trash-outline" size={25} color="black" />
                                             </TouchableOpacity>
                                         )}

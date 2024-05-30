@@ -4,13 +4,15 @@
  Descripcion: Contiene la vista principal del catálogo
 */
 
-import React, { useState     } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, ScrollView, Alert, Modal, Pressable, TextInput, TouchableOpacity } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { styles } from "../../../Styles/Styles";
 import * as Comun from '../../../Config/Comun';
 import FormPrivilegios from '../../../Config/Formularios/formPrivilegios';
+import { Backend } from "../../../Config/Conexion/backendConfig";
+
 
 // Declaramos los valores iniciales del formulario
 const initialSelected = {
@@ -18,9 +20,9 @@ const initialSelected = {
 };
 
 export default function Home() {
+    const { url } = Backend();
     // Hook para la navegación
     const navigation = useNavigation();
-
     // Hook para el modal de edición
     const [editModalVisible, setEditModalVisible] = useState(false);
     // Hook para marcar el negocio seleccionado
@@ -35,9 +37,12 @@ export default function Home() {
     // Agregar estado para los valores del negocio seleccionado
     const [selectedValues, setSelectedValues] = useState(initialSelected);
     // Hook para el filtro por FECHA_BAJA
-    const [FECHA_BAJAFilter, setFECHA_BAJAFilter] = useState('null');
+    const [statusFilter, setstatusFilter] = useState('null');
     // Hook para el nombre de la empresa
     const [empresa, setEmpresa] = useState('');
+    //aqui van los datos de la base de datos
+    const [data, setData] = useState([]);
+
 
 
     // Función para cambiar la acción cuando se presiona un botón
@@ -56,11 +61,11 @@ export default function Home() {
                 break;
             case 11:
                 console.log("Dar de alta privilegio");
-                quitarBaja(accion);
+                quitarBaja(COD_PRIVILEGIO);
                 break;
             case 12:
                 console.log("Dar de baja privilegio");
-                ponerBaja(accion);
+                ponerBaja(COD_PRIVILEGIO);
                 break;
             case 14:
                 console.log("Editar privilegio");
@@ -75,20 +80,38 @@ export default function Home() {
         }
     };
 
-    // Aquí van los datos, se sustituirá por la consulta a la base de datos
-    const [data, setData] = useState([
-        { COD_PRIVILEGIO: '01', NOMBRE_PRIVILEGIO: 'Perfumes Ian', FECHA_BAJA: null },
-        { COD_PRIVILEGIO: '02', NOMBRE_PRIVILEGIO: 'Soluciones T.I', FECHA_BAJA: null },
-        { COD_PRIVILEGIO: '03', NOMBRE_PRIVILEGIO: 'prueba1', FECHA_BAJA: null },
-        { COD_PRIVILEGIO: '04', NOMBRE_PRIVILEGIO: 'Soluciones T.I', FECHA_BAJA: null },
-        { COD_PRIVILEGIO: '05', NOMBRE_PRIVILEGIO: 'prueba1', FECHA_BAJA: null },
-        { COD_PRIVILEGIO: '06', NOMBRE_PRIVILEGIO: 'Soluciones T.I', FECHA_BAJA: null },
-        { COD_PRIVILEGIO: '07', NOMBRE_PRIVILEGIO: 'prueba1', FECHA_BAJA: null },
-        { COD_PRIVILEGIO: '08', NOMBRE_PRIVILEGIO: 'Estampa', FECHA_BAJA: null },
-        { COD_PRIVILEGIO: '09', NOMBRE_PRIVILEGIO: 'Roca', FECHA_BAJA: null },
-        { COD_PRIVILEGIO: '10', NOMBRE_PRIVILEGIO: 'Adios', FECHA_BAJA: null },
-        { COD_PRIVILEGIO: '11', NOMBRE_PRIVILEGIO: 'Adios', FECHA_BAJA: null },
-    ]);
+    useEffect(() => {
+        fetch(`${url}/Prvilegios/regresaPrivilegios.php?estado=${statusFilter === 'null' ? 'VIGENTES' : 'NO VIGENTES'}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al obtener los privilegios');
+                }
+                return response.text();
+            })
+            .then(text => {
+                const data = JSON.parse(text);
+                setData(data);
+            })
+            .catch(error => {
+                console.error('Error al obtener negocios:', error);
+            });
+    }, [statusFilter]);
+
+
+    // Función para mostrar la página anterior
+    const handlePrevious = () => {
+        if (page > 1) {
+            setPage(page - 1);
+        }
+    };
+
+    // Función para mostrar la siguiente página
+    const handleNext = () => {
+        if ((page * pageSize) < data.length) {
+            setPage(page + 1);
+        }
+    };
+
 
     // Función para abrir el modal de edición y mostrar los datos del privilegio
     const openEditModal = (COD_PRIVILEGIO) => {
@@ -114,7 +137,7 @@ export default function Home() {
     };
 
     // Función para poner baja
-    const ponerBaja = () => {
+    const ponerBaja = (cod_privilegio) => {
         Alert.alert(
             "¿Estás seguro de asignar baja?",
             "Esta acción no se puede deshacer",
@@ -126,11 +149,32 @@ export default function Home() {
                 },
                 {
                     text: "Sí",
-                    onPress: () => { navigation.navigate('SplashCatalogoPriv', { accion: Comun.accion.Baja }) }
+                    onPress: () => {
+                        fetch(`${url}/Privilegios/bajaPrivilegio.php`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ cod_privilegio }) 
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    navigation.replace('SplashCatalogoPriv', { accion: Comun.accion.Baja });
+                                } else {
+                                    Alert.alert("Error", data.message || "Error al dar de baja el privilegio.");
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                Alert.alert("Error", "Ocurrió un error al realizar la operación.");
+                            });
+                    }
                 }
             ]
         );
     };
+
 
     // Función para quitar baja
     const quitarBaja = () => {
@@ -145,7 +189,27 @@ export default function Home() {
                 },
                 {
                     text: "Sí",
-                    onPress: () => { navigation.navigate('SplashCatalogoPriv', { accion: Comun.accion.Alta }) }
+                    onPress: () => {
+                        fetch(`${url}/Privilegios/altaPrivilegio.php`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ cod_privilegio }) 
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    navigation.replace('SplashCatalogoPriv', { accion: Comun.accion.Baja });
+                                } else {
+                                    Alert.alert("Error", data.message || "Error al dar de baja el privilegio.");
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                Alert.alert("Error", "Ocurrió un error al realizar la operación.");
+                            });
+                    }
                 }
             ]
         );
@@ -160,19 +224,6 @@ export default function Home() {
         navigation.replace('Catalogos');
     };
 
-    // Función para mostrar la página anterior
-    const handlePrevious = () => {
-        if (page > 1) {
-            setPage(page - 1);
-        }
-    };
-
-    // Función para mostrar la siguiente página
-    const handleNext = () => {
-        if ((page * pageSize) < data.length) {
-            setPage(page + 1);
-        }
-    };
 
     return (
         <View style={styles.container}>
@@ -197,9 +248,9 @@ export default function Home() {
                     </Pressable>
                     <Pressable
                         style={[styles.button, styles.buttonAzul]}
-                        onPress={() => setFECHA_BAJAFilter(FECHA_BAJAFilter === 'null' ? 'baja' : 'null')}
+                        onPress={() => setstatusFilter(statusFilter === 'null' ? 'baja' : 'null')}
                     >
-                        <Text style={styles.textStyle}>{FECHA_BAJAFilter === 'null' ? 'Bajas' : 'Vigentes'}</Text>
+                        <Text style={styles.textStyle}>{statusFilter === 'null' ? 'Bajas' : 'Vigentes'}</Text>
                     </Pressable>
                     <Pressable
                         style={[styles.button, styles.buttonAzul]}
@@ -228,7 +279,7 @@ export default function Home() {
                                 return val;
                             }
                         })
-                            .filter((val) => FECHA_BAJAFilter === 'null' ? val.FECHA_BAJA === 'null' : val.FECHA_BAJA !== 'null')
+                            .filter((val) => statusFilter === 'null' ? val.FECHA_BAJA === 'null' : val.FECHA_BAJA !== 'null')
                             .slice((page - 1) * pageSize, page * pageSize)
                             .map((item, index) => (
                                 <View key={index} style={styles.Contenido}>
@@ -237,12 +288,12 @@ export default function Home() {
                                         <TouchableOpacity onPress={() => handleAction(Comun.accion.Editar, item.COD_PRIVILEGIO)}>
                                             <Icon name="eye-outline" size={25} color="black" />
                                         </TouchableOpacity>
-                                        {FECHA_BAJAFilter === 'baja' ? (
-                                            <TouchableOpacity onPress={() => handleAction(Comun.accion.Alta)}>
+                                        {statusFilter === 'baja' ? (
+                                            <TouchableOpacity onPress={() => handleAction(Comun.accion.Alta, item.COD_PRIVILEGIO)}>
                                                 <Icon name="checkmark-outline" size={25} color="black" />
                                             </TouchableOpacity>
                                         ) : (
-                                            <TouchableOpacity onPress={() => handleAction(Comun.accion.Baja)} disabled={FECHA_BAJAFilter === 'baja'}>
+                                            <TouchableOpacity onPress={() => handleAction(Comun.accion.Baja, item.COD_PRIVILEGIO)} disabled={statusFilter === 'baja'}>
                                                 <Icon name="trash-outline" size={25} color="black" />
                                             </TouchableOpacity>
                                         )}

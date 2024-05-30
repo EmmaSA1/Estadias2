@@ -1,10 +1,19 @@
+/*
+  EMMANUEL SANTOS APAEZ
+ 21 de mayo de 2024 - 14 hrs
+ Descripcion: Contiene la pantalla principal de localidad 
+*/
+
+
 import React, { useState, useEffect } from 'react';
 import { Text, View, ScrollView, Alert, Modal, Pressable, TextInput, TouchableOpacity } from "react-native";
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { styles } from "../../../Styles/Styles";
 import * as Comun from '../../../Config/Comun';
 import FormLocalidades from '../../../Config/Formularios/formLocalidades';
+import { Backend } from "../../../Config/Conexion/backendConfig";
+
 
 // Declaramos los valores iniciales del formulario 
 const initialSelected = {
@@ -13,6 +22,7 @@ const initialSelected = {
 };
 
 export default function Home() {
+    const { url } = Backend();
     // Hook para la navegación
     const navigation = useNavigation();
 
@@ -30,9 +40,10 @@ export default function Home() {
     // Agregar estado para los valores del negocio seleccionado
     const [selectedValues, setSelectedValues] = useState(initialSelected);
     // Hook para el filtro por FECHA_BAJA
-    const [FECHA_BAJAFilter, setFECHA_BAJAFilter] = useState('null');
+    const [statusFilter, setstatusFilter] = useState('null');
+    //aqui van los datos de la base de datos
+    const [data, setData] = useState([]);
 
-   
 
     // Función para cambiar la acción cuando se presiona un botón
     const handleAction = (accion, COD_LOCALIDAD) => {
@@ -50,11 +61,11 @@ export default function Home() {
                 break;
             case 11:
                 console.log("Dar de alta negocio");
-                quitarBaja(accion);
+                quitarBaja(COD_LOCALIDAD);
                 break;
             case 12:
                 console.log("Dar de baja negocio");
-                ponerBaja(accion);
+                ponerBaja(COD_LOCALIDAD);
                 break;
             case 14:
                 console.log("Editar negocio");
@@ -66,20 +77,39 @@ export default function Home() {
         }
     };
 
-    // Aquí van los datos, se sustituirá por la consulta a la base de datos
-    const [data, setData] = useState([
-        { COD_LOCALIDAD: '01', LOCALIDAD: 'Xochitepec', ESTADOS: 'Morelos',FECHA_BAJA: null },
-        { COD_LOCALIDAD: '02', LOCALIDAD: 'Tezoyuca', ESTADOS: 'Morelos', FECHA_BAJA: null },
-        { COD_LOCALIDAD: '03', LOCALIDAD: 'Cuernavaca', ESTADOS: 'Morelos', FECHA_BAJA: null },
-        { COD_LOCALIDAD: '04', LOCALIDAD: 'Temixco', ESTADOS: 'Morelos', FECHA_BAJA: null },
-        { COD_LOCALIDAD: '05', LOCALIDAD: 'Cuernavaca', ESTADOS: 'Morelos', FECHA_BAJA: null },
-        { COD_LOCALIDAD: '06', LOCALIDAD: 'Puente', ESTADOS: 'Morelos', FECHA_BAJA: null },
-        { COD_LOCALIDAD: '07', LOCALIDAD: 'Zapata', ESTADOS: 'Morelos', FECHA_BAJA: null },
-        { COD_LOCALIDAD: '08', LOCALIDAD: 'Xochimilco', ESTADOS: 'Morelos', FECHA_BAJA: null },
-        { COD_LOCALIDAD: '09', LOCALIDAD: 'Buenos ', ESTADOS: 'Morelos', FECHA_BAJA: null },
-        { COD_LOCALIDAD: '10', LOCALIDAD: 'Xochitepec', ESTADOS: 'Morelos',FECHA_BAJA: null },
-        { COD_LOCALIDAD: '11', LOCALIDAD: 'Xochitepec', ESTADOS: 'Morelos',FECHA_BAJA: null },
-    ]);
+
+    
+    useEffect(() => {
+        const Cod_Negocio= Comun.CodigoNegocio.codigo; 
+        fetch(`${url}/Localidades/regresaTodasLocalidades.php?Cod_Negocio=${Cod_Negocio}&estatus=${statusFilter === 'null' ? 'VIGENTES' : 'NO VIGENTES'}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al obtener las localidades');
+                }
+                return response.json();
+            })
+            .then(data => {
+                setData(data);
+            })
+            .catch(error => {
+                console.error('Error al obtener localidades:', error);
+            });
+    }, [statusFilter]);
+    
+
+    // Función para mostrar la página anterior
+    const handlePrevious = () => {
+        if (page > 1) {
+            setPage(page - 1);
+        }
+    };
+
+    // Función para mostrar la siguiente página
+    const handleNext = () => {
+        if ((page * pageSize) < data.length) {
+            setPage(page + 1);
+        }
+    };
 
     // Función para abrir el modal de edición y mostrar los datos del negocio
     const openEditModal = (COD_LOCALIDAD) => {
@@ -113,8 +143,7 @@ export default function Home() {
         }
     };
 
-    // Función para poner baja
-    const ponerBaja = () => {
+    const ponerBaja = (cod_negocio, cod_localidad) => {
         Alert.alert(
             "¿Estás seguro de asignar baja?",
             "Esta acción no se puede deshacer",
@@ -126,14 +155,34 @@ export default function Home() {
                 },
                 {
                     text: "Sí",
-                    onPress: () => { navigation.navigate('SplashCatalogoLoc', { accion: Comun.accion.Baja }) }
+                    onPress: () => {
+                        fetch(`${url}/Localidades/bajaLocalidad.php`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ cod_negocio, cod_localidad })
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    navigation.replace('SplashCatalogoLoc', { accion: Comun.accion.Baja });
+                                } else {
+                                    Alert.alert("Error", data.message || "Error al dar de baja la localidad.");
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                Alert.alert("Error", "Ocurrió un error al realizar la operación.");
+                            });
+                    }
                 }
             ]
         );
     };
-
+    
     // Función para quitar baja
-    const quitarBaja = () => {
+    const quitarBaja = (cod_negocio, cod_localidad) => {
         Alert.alert(
             "¿Estás seguro de quitar baja?",
             "Esta acción no se puede deshacer",
@@ -145,11 +194,32 @@ export default function Home() {
                 },
                 {
                     text: "Sí",
-                    onPress: () => { navigation.navigate('SplashCatalogoLoc', { accion: Comun.accion.Alta }) }
+                    onPress: () => {
+                        fetch(`${url}/Localidades/activaLocalidad.php`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ cod_negocio, cod_localidad })
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    navigation.replace('SplashCatalogoLoc', { accion: Comun.accion.Alta });
+                                } else {
+                                    Alert.alert("Error", data.message || "Error al activar la localidad.");
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                Alert.alert("Error", "Ocurrió un error al realizar la operación.");
+                            });
+                    }
                 }
             ]
         );
     };
+    
 
     const handleSubmit = (values) => {
         handleEdit(values); // Pasa los valores al manejo de la edición
@@ -160,19 +230,7 @@ export default function Home() {
         navigation.replace('Catalogos');
     };
 
-    // Función para mostrar la página anterior
-    const handlePrevious = () => {
-        if (page > 1) {
-            setPage(page - 1);
-        }
-    };
-
-    // Función para mostrar la siguiente página
-    const handleNext = () => {
-        if ((page * pageSize) < data.length) {
-            setPage(page + 1);
-        }
-    };
+    
 
     return (
         <View style={styles.container}>
@@ -197,9 +255,9 @@ export default function Home() {
                     </Pressable>
                     <Pressable
                         style={[styles.button, styles.buttonAzul]}
-                        onPress={() => setFECHA_BAJAFilter(FECHA_BAJAFilter === 'null' ? 'baja' : 'null')}
+                        onPress={() => setstatusFilter(statusFilter === 'null' ? 'baja' : 'null')}
                     >
-                        <Text style={styles.textStyle}>{FECHA_BAJAFilter === 'null' ? 'Bajas' : 'Vigentes'}</Text>
+                        <Text style={styles.textStyle}>{statusFilter === 'null' ? 'Bajas' : 'Vigentes'}</Text>
                     </Pressable>
                 </View>
                 <View style={styles.table}>
@@ -228,7 +286,7 @@ export default function Home() {
                                 return val;
                             }
                         })
-                            .filter((val) => FECHA_BAJAFilter === 'null' ? val.FECHA_BAJA === 'null' : val.FECHA_BAJA !== 'null')
+                            .filter((val) => statusFilter === 'null' ? val.FECHA_BAJA === 'null' : val.FECHA_BAJA !== 'null')
                             .slice((page - 1) * pageSize, page * pageSize)
                             .map((item, index) => (
                                 <View key={index} style={styles.Contenido}>
@@ -238,12 +296,12 @@ export default function Home() {
                                         <TouchableOpacity onPress={() => handleAction(Comun.accion.Editar, item.COD_LOCALIDAD)}>
                                             <Icon name="eye-outline" size={25} color="black" />
                                         </TouchableOpacity>
-                                        {FECHA_BAJAFilter === 'baja' ? (
-                                            <TouchableOpacity onPress={() => handleAction(Comun.accion.Alta)}>
+                                        {statusFilter === 'baja' ? (
+                                            <TouchableOpacity onPress={() => handleAction(Comun.accion.Alta,  item.COD_LOCALIDAD)}>
                                                 <Icon name="checkmark-outline" size={25} color="black" />
                                             </TouchableOpacity>
                                         ) : (
-                                            <TouchableOpacity onPress={() => handleAction(Comun.accion.Baja)} disabled={FECHA_BAJAFilter === 'baja'}>
+                                            <TouchableOpacity onPress={() => handleAction(Comun.accion.Baja,  item.COD_LOCALIDAD)} disabled={statusFilter === 'baja'}>
                                                 <Icon name="trash-outline" size={25} color="black" />
                                             </TouchableOpacity>
                                         )}

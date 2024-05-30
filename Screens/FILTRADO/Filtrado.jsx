@@ -40,8 +40,8 @@ export default function FilterScreen() {
 
   // Datos de ejemplo para mostrar en el Picker
   const data = [
-    { codNegocio: '01', Nombre: 'Perfumes Ian' },
-    { codNegocio: '02', Nombre: 'Soluciones TI' }
+    { codNegocio: '1', Nombre: 'Perfumes Ian' },
+    { codNegocio: '2', Nombre: 'Soluciones TI' }
   ];
 
   return (

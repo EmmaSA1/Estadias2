@@ -5,16 +5,35 @@
 */
 
 import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, Alert } from 'react-native';
 import { styles } from '../../../Styles/Styles';
 import * as Comun from '../../../Config/Comun';
 import FormNegocios from '../../../Config/Formularios/formNegocios';
+import { Backend } from "../../../Config/Conexion/backendConfig";
 
 export default function Agregar({ route }) {
     const { accion } = route.params;
+    const { url } = Backend();
 
-    const handleSubmit = (data) => {
-        console.log('Datos del negocio:', data);
+    const handleSubmit = async (data) => {
+        try{
+            const response = await fetch(`${url}/negocios/insertarnegocio.php`, {
+                method: 'POST',
+                headers:{
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+            const result = await response.json();
+            if (result.success) {
+                console.log('Datos del negocio:', data);
+            } else {
+                console.log('Error', result.message);
+            }
+        }catch(error){
+            console.error('Error al insertar negocio:', error);
+            Alert.alert('Error', 'Hubo un problema al insertar el negocio.');
+        }
     };
 
     const initialValues = {

@@ -1,3 +1,9 @@
+/*
+ EMMANUEL SANTOS APAEZ 
+ 5 de Mayo de 2024 - 13 hrs
+ Descripcion: Contiene el las rutas de todas las pantallas que se utilizan
+*/
+
 import "react-native-gesture-handler";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
@@ -8,24 +14,26 @@ import Filter from './Screens/FILTRADO/Filtrado';
 import PaginaPrin from './Screens/PAGINA-PRIN/Página';
 import Catalogos from './Screens/CATALOGOS/Catalogos';
 
+//pantallas del catalogo privilegios
 import HomeCatalogoPriv from "./Screens/CATALOGOS/PRIVILEGIO/Home";
 import AgregarCatalogoPriv from "./Screens/CATALOGOS/PRIVILEGIO/Agregar";
 import SplashCatalogoPriv from "./Screens/CATALOGOS/PRIVILEGIO/Splash";
 import GrupPrivCatalogoPriv from "./Screens/CATALOGOS/PRIVILEGIO/GrupPriv";
 
-import HomeCatalogoNeg from "./Screens/CATALOGOS/NEGOCIO/Home";
-import AgregarCatalogoNeg from "./Screens/CATALOGOS/NEGOCIO/Agregar";
-import SplashCatalogoNeg from "./Screens/CATALOGOS/NEGOCIO/Splash";
+//pantallas del catalogo negocios
+import HomeCatalogoNeg from "./Screens/CATALOGOS/NEGOCIOS/Home";
+import AgregarCatalogoNeg from "./Screens/CATALOGOS/NEGOCIOS/Agregar";
+import SplashCatalogoNeg from "./Screens/CATALOGOS/NEGOCIOS/Splash";
 
-import HomeCatalogoLoc from "./Screens/CATALOGOS/LOCALIDADES/Home";
-import AgregarCatalogoLoc from "./Screens/CATALOGOS/LOCALIDADES/Agregar";
-import SplashCatalogoLoc from "./Screens/CATALOGOS/LOCALIDADES/Splash";
-
+//pantallas del catalogo movimientos
 import HomeCatalogoMov from "./Screens/CATALOGOS/MOVIMIENTOS/Home";
 import AgregarCatalogoMov from "./Screens/CATALOGOS/MOVIMIENTOS/Agregar";
 import SplashCatalogoMov from "./Screens/CATALOGOS/MOVIMIENTOS/Splash";
 
-//import GrupPriv from "./Screens/GrupPriv";
+//pantallas del catalogo localidades
+import HomeCatalogoLoc from "./Screens/CATALOGOS/LOCALIDADES/Home";
+import AgregarCatalogoLoc from "./Screens/CATALOGOS/LOCALIDADES/Agregar";
+import SplashCatalogoLoc from "./Screens/CATALOGOS/LOCALIDADES/Splash";
 
 export default function App() {
   //se declara el stack navigator
@@ -127,6 +135,30 @@ export default function App() {
           }}
         />
         <Stack.Screen
+          name="HomeCatalogoMov"
+          component={HomeCatalogoMov}
+          options={{
+            title: "HomeCatalogoMov",
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="AgregarCatalogoMov"
+          component={AgregarCatalogoMov}
+          options={{
+            title: "AgregarCatalogoMov",
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="SplashCatalogoMov"
+          component={SplashCatalogoMov}
+          options={{
+            title: "SplashCatalogoMov",
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
           name="HomeCatalogoLoc"
           component={HomeCatalogoLoc}
           options={{
@@ -153,6 +185,7 @@ export default function App() {
       </Stack.Navigator>
     );
   }
+
   return (
     <NavigationContainer>
       <MyStack />
