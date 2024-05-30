@@ -1,4 +1,12 @@
 <?php
+/*
+EMMANUEL SANTOS APAEZ 
+29 DE ABRIL DEL 2024
+
+*/
+?>
+
+<?php
 include '../../conexion.php';
 include '../../dao/daoPrivilegio.php';
 
