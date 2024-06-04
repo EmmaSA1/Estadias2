@@ -1,11 +1,11 @@
 /*
- EMMANUEL SANTOS APAEZ 
- 21 de mayo de 2024 - 18 hrs
- Descripcion: Es la actualizacón de filtrado para la muestra de codigo y nombre de negocio
-
+ EMMANUEL SANTOS APAEZ
+ 09 de mayo de 2024 - 18 hrs
+ Descripcion: Contiene la pantalla que filtra los negocios
 */
+
 import React, { useState } from 'react';
-import { View, Button, Text, TouchableOpacity, Alert, Image } from 'react-native';
+import { View, Button, Text, Alert, Image } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from '../../Styles/Styles';
@@ -16,6 +16,7 @@ export default function FilterScreen() {
   const [selectedOption, setSelectedOption] = useState('');
   const navigation = useNavigation();
 
+  // Función para manejar la navegación a la página principal
   const handleNext = () => {
     if (selectedOption === '') {
       Alert.alert('Error', 'Por favor, seleccione una empresa antes de continuar.');
@@ -35,7 +36,7 @@ export default function FilterScreen() {
         console.error("No se encontró el negocio para el nombre seleccionado:", selectedOption);
     }
 
-    navigation.navigate('PaginaPrin', { selectedOption });
+    navigation.navigate('PaginaPrin');
   };
 
   // Datos de ejemplo para mostrar en el Picker

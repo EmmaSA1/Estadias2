@@ -1,9 +1,3 @@
-/*
-EMMANUEL SANTOS APAEZ
- 21 de mayo de 2024 - 14 hrs
- Descripcion: Contiene la pantalla de carga de la aplicación
-*/
-
 import React, { useEffect } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import LottieView from 'lottie-react-native';

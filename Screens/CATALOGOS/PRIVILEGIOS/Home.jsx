@@ -1,7 +1,7 @@
 /*
  FRANCO HERNANDEZ ANGELUZ ABIMELEK y EMMANUEL SANTOS APAEZ
  11 de mayo de 2024 - 14 hrs
- Descripcion: Contiene la vista principal del catálogo
+ Descripcion: Contiene las La vista principal del catalogo
 */
 
 import React, { useState, useEffect } from 'react';
@@ -13,21 +13,20 @@ import * as Comun from '../../../Config/Comun';
 import FormPrivilegios from '../../../Config/Formularios/formPrivilegios';
 import { Backend } from "../../../Config/Conexion/backendConfig";
 
-
-// Declaramos los valores iniciales del formulario
+//Declaramos los valores iniciales del formulario 
 const initialSelected = {
-    NOMBRE_PRIVILEGIO: ''
+    DESCRIPCION_PRIVILEGIO: ''
 };
 
 export default function Home() {
     const { url } = Backend();
     // Hook para la navegación
     const navigation = useNavigation();
-    // Hook para el modal de edición
+    // Hook para el modal de edición  
     const [editModalVisible, setEditModalVisible] = useState(false);
     // Hook para marcar el negocio seleccionado
     const [selected, setSelected] = useState(null);
-    // Hook para la barra de búsqueda
+    // Hook para la barra de busqueda
     const [searchTerm, setSearchTerm] = useState('');
     // Estado para la acción actual
     const [accion, setAccion] = useState('');
@@ -36,14 +35,10 @@ export default function Home() {
     const pageSize = 10;
     // Agregar estado para los valores del negocio seleccionado
     const [selectedValues, setSelectedValues] = useState(initialSelected);
-    // Hook para el filtro por FECHA_BAJA
-    const [statusFilter, setstatusFilter] = useState('null');
-    // Hook para el nombre de la empresa
-    const [empresa, setEmpresa] = useState('');
-    //aqui van los datos de la base de datos
+    // Hook para el filtro por status
+    const [statusFilter, setStatusFilter] = useState('null');
+    //aqui van los datos se sustituira por la consulta a la base de datos
     const [data, setData] = useState([]);
-
-
 
     // Función para cambiar la acción cuando se presiona un botón
     const handleAction = (accion, COD_PRIVILEGIO) => {
@@ -53,22 +48,22 @@ export default function Home() {
 
         switch (accion) {
             case 13:
-                console.log("Agregar nuevo privilegio");
+                console.log("Agregar nuevo negocio");
                 navigation.replace('AgregarCatalogoPriv', { accion: accion });
                 break;
             case 10:
-                console.log("Consultar privilegio");
+                console.log("Consultar negocio");
                 break;
             case 11:
-                console.log("Dar de alta privilegio");
+                console.log("Dar de alta negocio");
                 quitarBaja(COD_PRIVILEGIO);
                 break;
             case 12:
-                console.log("Dar de baja privilegio");
+                console.log("Dar de baja negocio");
                 ponerBaja(COD_PRIVILEGIO);
                 break;
             case 14:
-                console.log("Editar privilegio");
+                console.log("Editar negocio");
                 openEditModal(COD_PRIVILEGIO);
                 break;
             case 15:
@@ -80,8 +75,9 @@ export default function Home() {
         }
     };
 
+    // const negocioPriv = Comun.CodigoNegocio.codigo;
     useEffect(() => {
-        fetch(`${url}/Prvilegios/regresaPrivilegios.php?estado=${statusFilter === 'null' ? 'VIGENTES' : 'NO VIGENTES'}`)
+        fetch(`${url}/Privilegios/regresarPrivilegios.php?estado=${statusFilter === 'null' ? 'VIGENTES' : 'NO VIGENTES'}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Error al obtener los privilegios');
@@ -93,27 +89,28 @@ export default function Home() {
                 setData(data);
             })
             .catch(error => {
-                console.error('Error al obtener negocios:', error);
+                console.error('Error al obtener privilegios:', error);
+                Alert.alert('Error', 'Hubo un problema al obtener los privilegios.');
             });
     }, [statusFilter]);
 
+    
 
-    // Función para mostrar la página anterior
+    //funcion para mostrar la paguina anterior
     const handlePrevious = () => {
         if (page > 1) {
             setPage(page - 1);
         }
     };
 
-    // Función para mostrar la siguiente página
+    //funcion para mostrar la siguiente paguina
     const handleNext = () => {
         if ((page * pageSize) < data.length) {
             setPage(page + 1);
         }
     };
 
-
-    // Función para abrir el modal de edición y mostrar los datos del privilegio
+    //función para abrir el modal de edición y mostrar los datos del negocio
     const openEditModal = (COD_PRIVILEGIO) => {
         const datos = data.find(item => item.COD_PRIVILEGIO === COD_PRIVILEGIO);
         setSelectedValues(datos); // Actualizar selectedValues con todos los datos del privilegio seleccionado
@@ -122,21 +119,39 @@ export default function Home() {
         console.log(datos);
     };
 
-    // Función para editar los datos del privilegio
-    const handleEdit = (values) => {
-        // Encuentra el índice del privilegio seleccionado
+    // Función para editar los datos del negocio
+    const handleEdit = async (values) => {
+        // Encuentra el índice del negocio seleccionado
         const index = data.findIndex(item => item.COD_PRIVILEGIO === selected.COD_PRIVILEGIO);
         // Crea una copia de los datos existentes
         const newData = [...data];
-        // Actualiza los datos del privilegio seleccionado
+        // Actualiza los datos del negocio seleccionado
         newData[index] = { ...newData[index], ...values };
         // Actualiza los datos
         setData(newData);
-
+        try {
+            const response = await fetch(`${url}/Privilegios/editarPrivilegio.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newData[index]),
+            });
+    
+            const result = await response.json();
+            if (result.success) {
+                console.log("Datos editados:", newData[index]);
+            } else {
+                Alert.alert('Error', result.message);
+            }
+        } catch (error) {
+            console.error('Error al actualizar privilegio:', error);
+            Alert.alert('Error', 'Hubo un problema al actualizar el privilegio.');
+        }
         console.log("Datos editados:", newData[index]);
     };
 
-    // Función para poner baja
+    //funcion para poner baja
     const ponerBaja = (cod_privilegio) => {
         Alert.alert(
             "¿Estás seguro de asignar baja?",
@@ -149,13 +164,13 @@ export default function Home() {
                 },
                 {
                     text: "Sí",
-                    onPress: () => {
+                    onPress: () => { 
                         fetch(`${url}/Privilegios/bajaPrivilegio.php`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
                             },
-                            body: JSON.stringify({ cod_privilegio }) 
+                            body: JSON.stringify({ cod_privilegio })
                         })
                             .then(response => response.json())
                             .then(data => {
@@ -169,15 +184,14 @@ export default function Home() {
                                 console.error('Error:', error);
                                 Alert.alert("Error", "Ocurrió un error al realizar la operación.");
                             });
-                    }
+                     }
                 }
             ]
         );
     };
 
-
-    // Función para quitar baja
-    const quitarBaja = () => {
+    //funcion para quitar baja
+    const quitarBaja = (cod_privilegio) => {
         Alert.alert(
             "¿Estás seguro de quitar baja?",
             "Esta acción no se puede deshacer",
@@ -189,27 +203,27 @@ export default function Home() {
                 },
                 {
                     text: "Sí",
-                    onPress: () => {
+                    onPress: () => { 
                         fetch(`${url}/Privilegios/altaPrivilegio.php`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
                             },
-                            body: JSON.stringify({ cod_privilegio }) 
+                            body: JSON.stringify({ cod_privilegio })
                         })
                             .then(response => response.json())
                             .then(data => {
                                 if (data.success) {
-                                    navigation.replace('SplashCatalogoPriv', { accion: Comun.accion.Baja });
+                                    navigation.replace('SplashCatalogoPriv', { accion: Comun.accion.Alta });
                                 } else {
-                                    Alert.alert("Error", data.message || "Error al dar de baja el privilegio.");
+                                    Alert.alert("Error", data.message || "Error al dar de alta el privilegio.");
                                 }
                             })
                             .catch(error => {
                                 console.error('Error:', error);
                                 Alert.alert("Error", "Ocurrió un error al realizar la operación.");
                             });
-                    }
+                     }
                 }
             ]
         );
@@ -224,7 +238,6 @@ export default function Home() {
         navigation.replace('Catalogos');
     };
 
-
     return (
         <View style={styles.container}>
             <View style={styles.containerHeader}>
@@ -235,7 +248,7 @@ export default function Home() {
                     style={[styles.button, styles.buttonAzul]}
                     onPress={handleBack}
                 >
-                    <Text style={styles.textStyle}>Regresar</Text>
+                    <Text style={styles.textStyle}>Regrsear</Text>
                 </Pressable>
             </View>
             <View style={styles.container3}>
@@ -248,7 +261,7 @@ export default function Home() {
                     </Pressable>
                     <Pressable
                         style={[styles.button, styles.buttonAzul]}
-                        onPress={() => setstatusFilter(statusFilter === 'null' ? 'baja' : 'null')}
+                        onPress={() => setStatusFilter(statusFilter === 'null' ? 'baja' : 'null')}
                     >
                         <Text style={styles.textStyle}>{statusFilter === 'null' ? 'Bajas' : 'Vigentes'}</Text>
                     </Pressable>
@@ -275,15 +288,15 @@ export default function Home() {
                         {data.filter((val) => {
                             if (searchTerm === '') {
                                 return val;
-                            } else if (val.NOMBRE_PRIVILEGIO.toLowerCase().includes(searchTerm.toLowerCase())) {
+                            } else if (val.DESCRIPCION_PRIVILEGIO.toLowerCase().includes(searchTerm.toLowerCase())) {
                                 return val;
                             }
                         })
-                            .filter((val) => statusFilter === 'null' ? val.FECHA_BAJA === 'null' : val.FECHA_BAJA !== 'null')
+                        .filter((val) => statusFilter === 'null' ? val.FECHA_BAJA === null : val.FECHA_BAJA !== null)
                             .slice((page - 1) * pageSize, page * pageSize)
                             .map((item, index) => (
                                 <View key={index} style={styles.Contenido}>
-                                    <Text style={styles.cell}>{item.NOMBRE_PRIVILEGIO}</Text>
+                                    <Text style={styles.cell}>{item.DESCRIPCION_PRIVILEGIO}</Text>
                                     <View style={styles.iconContainer}>
                                         <TouchableOpacity onPress={() => handleAction(Comun.accion.Editar, item.COD_PRIVILEGIO)}>
                                             <Icon name="eye-outline" size={25} color="black" />
@@ -326,7 +339,7 @@ export default function Home() {
                         <ScrollView>
                             <Text style={styles.titleInput}>Código del privilegio</Text>
                             <TextInput
-                                style={styles.inputCodPriv}
+                                style={styles.input}
                                 placeholder="Código privilegio"
                                 value={selected ? selected.COD_PRIVILEGIO : ''}
                             />
@@ -335,6 +348,6 @@ export default function Home() {
                     </View>
                 </View>
             </Modal>
-        </View>
+        </View >
     );
 }

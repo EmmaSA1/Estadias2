@@ -4,7 +4,7 @@
  Descripcion: Contiene las La vista principal del catalogo Movimientos
 */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, ScrollView, Alert, Modal, Pressable, TextInput, TouchableOpacity } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -39,10 +39,12 @@ export default function Home() {
     const pageSize = 10;
     // Estado para el filtro por estado
     const [statusFilter, setStatusFilter] = useState('null');
+    //aqui van los datos de la base de datos
+    const [data, setData] = useState([]);
 
     // Función para cambiar la acción cuando se presiona un botón
-    const handleAction = (accion, cod_movimiento) => {
-        setSelected(cod_movimiento);
+    const handleAction = (accion, COD_MOVIMIENTO) => {
+        setSelected(COD_MOVIMIENTO);
         setAccion(accion);
         console.log(accion);
 
@@ -56,42 +58,42 @@ export default function Home() {
                 break;
             case 11:
                 console.log("Dar de alta movimiento");
-                QuitarBaja(accion);
+                QuitarBaja(COD_MOVIMIENTO);
                 break;
             case 12:
                 console.log("Dar de baja movimiento");
-                PonerBaja(accion);
+                PonerBaja(COD_MOVIMIENTO);
                 break;
             case 14:
                 console.log("Editar movimiento");
-                openEditModal(cod_movimiento);
+                openEditModal(COD_MOVIMIENTO);
                 break;
             default:
                 console.log("Acción no reconocida");
         }
     };
 
-    //aqui van los datos de la base de datos
-    const [data, setData] = useState([
-        {COD_MOVIMIENTO: '1', DESCRIPCION:'Abono', SIGNO:'+', FECHA_BAJA:null},
-        {COD_MOVIMIENTO: '2', DESCRIPCION:'Efe', SIGNO:'+', FECHA_BAJA:'2004-04-12'}
-    ]);
-
-    // useEffect(() => {
-    //     fetch(url + 'serviciosNegocio.php')
-    //         .then(response => {
-    //             if (!response.ok) {
-    //                 throw new Error('Error al obtener los negocios');
-    //             }
-    //             return response.json();
-    //         })
-    //         .then(data => {
-    //             setData(data);
-    //         })
-    //         .catch(error => {
-    //             console.error('Error al obtener negocios:', error);
-    //         });
-    // }, []);
+    const codNegocio = Comun.CodigoNegocio.codigo;
+    useEffect(() => {
+        fetch(`${url}/Movimientos/regresarMovimientos.php?COD_NEGOCIO=${codNegocio}&estatus=${statusFilter === 'null' ? 'VIGENTES' : 'NO VIGENTES'}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al obtener los movimientos');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    setData(data.movimientos);
+                } else {
+                    Alert.alert('Error', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error al obtener movimientos:', error);
+                Alert.alert('Error', 'Hubo un problema al obtener los movimientos.');
+            });
+    }, [statusFilter, codNegocio]);
 
     //funcion para mostrar la paguina anterior
     const handlePrevious = () => {
@@ -117,7 +119,7 @@ export default function Home() {
     }
 
     // Función para editar los datos del negocio
-    const handleEdit = (values) => {
+    const handleEdit = async(values) => {
         // Encuentra el índice del negocio seleccionado
         const index = data.findIndex(item => item.COD_MOVIMIENTO === selected.COD_MOVIMIENTO);
         // Crea una copia de los datos existentes
@@ -127,10 +129,27 @@ export default function Home() {
         // Actualiza los datos
         setData(newData);
 
-        console.log("Datos editados:", newData[index]);
+        try{
+            const response = await fetch(`${url}/Movimientos/editarMovimiento.php`,{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newData[index]),
+            });
+            const result = await response.json();
+            if(result.success){
+                console.log("Datos editados:", newData[index]);
+            } else {
+                Alert.alert('Error', result.message);
+            }
+            } catch (error) {
+                console.error('Error al editar el movimiento:', error);
+                Alert.alert('Error', 'Hubo un problema al editar el movimiento.');
+        }
     };
 
-    const PonerBaja = () => {
+    const PonerBaja = (COD_MOVIMIENTO) => {
         Alert.alert(
             "¿Estás seguro de asignar baja?",
             "Esta acción no se puede deshacer",
@@ -143,14 +162,35 @@ export default function Home() {
                 {
                     text: "Sí",
                     onPress: () => {
-                        navigation.navigate('SplashCatalogoMov', { accion: Comun.accion.Baja });
+                        fetch(`${url}/Movimientos/bajaMovimiento.php`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ 
+                                COD_NEGOCIO: codNegocio,
+                                COD_MOVIMIENTO,
+                             })
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    navigation.replace('SplashCatalogoMov', { accion: Comun.accion.Baja });
+                                } else {
+                                    Alert.alert("Error", data.message || "Error al dar de baja el movimiento.");
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                Alert.alert("Error", "Ocurrió un error al realizar la operación.");
+                            });
                     }
                 }
             ]
         );
     };
 
-    const QuitarBaja = () => {
+    const QuitarBaja = (COD_MOVIMIENTO) => {
         Alert.alert(
             "¿Estás seguro de quitar baja?",
             "Esta acción no se puede deshacer",
@@ -163,7 +203,28 @@ export default function Home() {
                 {
                     text: "Sí",
                     onPress: () => {
-                        navigation.navigate('SplashCatalogoMov', { accion: Comun.accion.Alta });
+                        fetch(`${url}/Movimientos/altaMovimiento.php`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ 
+                                COD_NEGOCIO: codNegocio,
+                                COD_MOVIMIENTO,
+                             })
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    navigation.replace('SplashCatalogoMov', { accion: Comun.accion.Alta });
+                                } else {
+                                    Alert.alert("Error", data.message || "Error al dar de alta el movimiento.");
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                Alert.alert("Error", "Ocurrió un error al realizar la operación.");
+                            });
                     }
                 }
             ]
@@ -243,12 +304,12 @@ export default function Home() {
                                         </TouchableOpacity>
                                         {statusFilter === 'baja' ? (
                                             <TouchableOpacity
-                                                onPress={() => handleAction(Comun.accion.Alta)}
+                                                onPress={() => handleAction(Comun.accion.Alta, item.COD_MOVIMIENTO)}
                                             >
                                                 <Icon name="checkmark-outline" size={25} color="black" />
                                             </TouchableOpacity>
                                         ) : (
-                                            <TouchableOpacity onPress={() => handleAction(Comun.accion.Baja)} disabled={statusFilter === 'baja'}>
+                                            <TouchableOpacity onPress={() => handleAction(Comun.accion.Baja, item.COD_MOVIMIENTO)} disabled={statusFilter === 'baja'}>
                                                 <Icon name="trash-outline" size={25} color="black" />
                                             </TouchableOpacity>
                                         )}

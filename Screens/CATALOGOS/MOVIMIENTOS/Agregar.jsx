@@ -1,21 +1,42 @@
-/*
- FRANCO HERNANDEZ ANGELUZ ABIMELEK
- 25 de abril de 2024 - 16 hrs
- Descripcion: Contiene la pantalla de agregar un movimiento
-*/
-
 import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
-
+import { View, Text, ScrollView, Alert } from 'react-native';
 import { styles } from '../../../Styles/Styles';
 import * as Comun from '../../../Config/Comun';
 import FormMovimientos from '../../../Config/Formularios/formMovimientos';
+import { Backend } from "../../../Config/Conexion/backendConfig";
 
 export default function Agregar({ route }) {
     const { accion } = route.params;
+    const { url } = Backend();
 
-    const handleSubmit = (data) => {
-        console.log('Datos del negocio:', data);
+    const COD_NEGOCIO = Comun.CodigoNegocio.codigo;
+
+    const handleSubmit = async (data) => {
+        try {
+            const body = {
+                ...data,
+                COD_NEGOCIO: COD_NEGOCIO,
+            };
+
+            const response = await fetch(`${url}/Movimientos/insertarMovimiento.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(body),
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                console.log(body);
+            } else {
+                console.log('Error al insertar el movimiento:', result.message);
+                Alert.alert('Error', result.message);
+            }
+        } catch (error) {
+            console.error('Error al insertar movimiento:', error);
+            Alert.alert('Error', 'Hubo un problema al insertar el movimiento.');
+        }
     };
 
     const initialValues = {

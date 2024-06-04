@@ -17,7 +17,7 @@ export default function Agregar({ route }) {
 
     const handleSubmit = async (data) => {
         try{
-            const response = await fetch(`${url}/negocios/insertarnegocio.php`, {
+            const response = await fetch(`${url}/Negocios/insertarNegocio.php`, {
                 method: 'POST',
                 headers:{
                     'Content-Type': 'application/json',

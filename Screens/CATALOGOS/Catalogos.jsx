@@ -10,13 +10,10 @@ import { styles } from '../../Styles/Styles';
 import * as Comun from '../../Config/Comun';
 
 export default function Catalogos() {
-
+    //hook para la navegacion
     const navigation = useNavigation();
-
     const handleCatalogos = (codCatalogo) => {
-
         console.log(codCatalogo);
-
         switch (codCatalogo) {
             case 100:
                 navigation.replace('HomeCatalogoNeg', { codCatalogo });
@@ -41,8 +38,8 @@ export default function Catalogos() {
 
     return (
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-        <View style={styles.container}>
-        <Text style={styles.title2}>Catalogos</Text>
+            <View style={styles.container}>
+                <Text style={styles.title2}>Catalogos</Text>
                 <View style={styles.buttonContainer1}>
                     <Pressable
                         style={[styles.buttonCatalogo, styles.buttonAzul]}
@@ -60,27 +57,29 @@ export default function Catalogos() {
                 </View>
 
                 <View style={styles.buttonContainer1}>
-                <Pressable
-                    style={[styles.buttonCatalogo, styles.buttonAzul]}
-                    onPress={() => handleCatalogos(Comun.codCatalogo.Movimientos)}>
-                    <Image source={{uri: 'https://cdn-icons-png.flaticon.com/512/4429/4429889.png'}} style={styles.image} />
-                    <Text style={styles.textStyle}>Movimientos</Text>
-                </Pressable>
+                    <Pressable
+                        style={[styles.buttonCatalogo, styles.buttonAzul]}
+                        onPress={() => handleCatalogos(Comun.codCatalogo.Movimientos)}>
+                        <Image source={{ uri: 'https://cdn-icons-png.flaticon.com/512/4429/4429889.png' }} style={styles.image} />
+                        <Text style={styles.textStyle}>Movimientos</Text>
+                    </Pressable>
 
-                <Pressable
-                    style={[styles.buttonCatalogo, styles.buttonAzul]}
-                    onPress={() => handleCatalogos(Comun.codCatalogo.Localidades)}>
-                    <Image source={{uri: 'https://cdn-icons-png.flaticon.com/512/854/854878.png'}} style={styles.image} />
-                    <Text style={styles.textStyle}>Localidades</Text>
-                </Pressable>
+                    <Pressable
+                        style={[styles.buttonCatalogo, styles.buttonAzul]}
+                        onPress={() => handleCatalogos(Comun.codCatalogo.Localidades)}>
+                        <Image source={{ uri: 'https://cdn-icons-png.flaticon.com/512/854/854878.png' }} style={styles.image} />
+                        <Text style={styles.textStyle}>Localidades</Text>
+                    </Pressable>
+
+
+
+                    
                 </View>
 
-                
-
-            <Pressable style={styles.backButton} onPress={handleBack}>
-                <Text style={styles.backButtonText}>Regresar</Text>
-            </Pressable>
-        </View>
+                <Pressable style={styles.backButton} onPress={handleBack}>
+                    <Text style={styles.backButtonText}>Regresar</Text>
+                </Pressable>
+            </View>
         </ScrollView>
     )
 };

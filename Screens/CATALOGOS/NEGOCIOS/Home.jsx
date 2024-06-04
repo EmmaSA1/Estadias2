@@ -75,9 +75,7 @@ export default function Home() {
             default:
                 console.log("Acción no reconocida");
         }
-
     };
-
 
     useEffect(() => {
         fetch(`${url}/Negocios/regresarNegocios.php?estado=${statusFilter === 'null' ? 'VIGENTES' : 'NO VIGENTES'}`)
@@ -93,10 +91,9 @@ export default function Home() {
             })
             .catch(error => {
                 console.error('Error al obtener negocios:', error);
+                Alert.alert('Error', 'Hubo un problema al obtener los negocios.');
             });
     }, [statusFilter]);
-
-
 
     //funcion para mostrar la paguina anterior
     const handlePrevious = () => {
@@ -122,7 +119,7 @@ export default function Home() {
     }
 
     // Función para editar los datos del negocio
-    const handleEdit = (values) => {
+    const handleEdit = async (values) => {
         // Encuentra el índice del negocio seleccionado
         const index = data.findIndex(item => item.COD_NEGOCIO === selected.COD_NEGOCIO);
         // Crea una copia de los datos existentes
@@ -131,9 +128,28 @@ export default function Home() {
         newData[index] = { ...newData[index], ...values };
         // Actualiza los datos
         setData(newData);
-
-        console.log("Datos editados:", newData[index]);
+        // Enviar los datos actualizados al servidor
+        try {
+            const response = await fetch(`${url}/Negocios/editarNegocio.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newData[index]),
+            });
+    
+            const result = await response.json();
+            if (result.success) {
+                console.log("Datos editados:", newData[index]);
+            } else {
+                Alert.alert('Error', result.message);
+            }
+        } catch (error) {
+            console.error('Error al actualizar negocio:', error);
+            Alert.alert('Error', 'Hubo un problema al actualizar el negocio.');
+        }
     };
+    
 
     const PonerBaja = (cod_negocio) => {
         Alert.alert(
@@ -173,9 +189,6 @@ export default function Home() {
         );
     };
 
-
-
-    
     const QuitarBaja = (cod_negocio) => {
         Alert.alert(
             "¿Estás seguro de quitar baja?",

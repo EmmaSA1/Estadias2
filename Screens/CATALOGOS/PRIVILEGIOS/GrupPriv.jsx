@@ -26,7 +26,7 @@ export default function GrupPriv() {
     return (
         <View style={styles.container}>
             <View style={styles.containerHeader}>
-                <Text style={styles.nombreNegocio}>{Comun.nombreNegocio.Soluciones}</Text>
+                <Text style={styles.nombreNegocio}>{Comun.nombreNegocio.nombre}</Text>
             </View>
             <View style={styles.container2}>
                 <Pressable

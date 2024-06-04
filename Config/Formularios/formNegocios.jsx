@@ -13,6 +13,15 @@ import { styles } from "../../Styles/Styles";
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
+const accion = {
+    Consultar: 10,
+    Alta: 11,
+    Baja: 12,
+    Agregar: 13,
+    Editar: 14,
+    GrupPriv: 15
+};
+
 export default function formNegocios({ initialValues, onSubmit, action }) {
 
     // Hook para la navegación
@@ -20,28 +29,23 @@ export default function formNegocios({ initialValues, onSubmit, action }) {
 
     //aqui manejamos las validaciones
     const validaciones = Yup.object({
-        NOMBRE: Yup.string().required('Este campo es obligatorio'),
-        GIRO: Yup.string().required('Este campo es obligatorio'),
-        DIRECCION: Yup.string().required('Este campo es obligatorio'),
+        NOMBRE: Yup.string().required('Este campo es obligatorio').min(3, 'Debe tener al menos 3 caracteres')
+        .max(49, 'Debe tener máximo 49 caracteres'),
+        GIRO: Yup.string().required('Este campo es obligatorio').min(3, 'Debe tener al menos 3 caracteres')
+        .max(49, 'Debe tener máximo 49 caracteres'),
+        DIRECCION: Yup.string().required('Este campo es obligatorio').min(10, 'Debe tener al menos 10 caracteres')
+        .max(99, 'Debe tener máximo 99 caracteres'),
         TELEFONO_OFICINA: Yup.string().matches(/^[0-9]{10}$/, 'Introduce un número real de 10 dígitos').required('Este campo es obligatorio'),
         TELEFONO_CELULAR: Yup.string().matches(/^[0-9]{10}$/, 'Introduce un número real de 10 dígitos').required('Este campo es obligatorio'),
-        E_MAIL: Yup.string().email('Email no válido').required('Este campo es obligatorio'),
-        LOGOTIPO: Yup.string().required('Este campo es obligatorio'),
+        E_MAIL: Yup.string().email('Email no válido').required('Este campo es obligatorio').min(7, 'Debe tener al menos 7 caracteres')
+        .max(34, 'Debe tener máximo 34 caracteres'),
+        LOGOTIPO: Yup.string().required('Este campo es obligatorio').min(5, 'Debe tener al menos 5 caracteres')
+        .max(19, 'Debe tener máximo 19 caracteres'),
     });
 
-    const handleButtonPress = (values, event) => {
+    const handleButtonPress = (values, formikActions) => {
         console.log(action);
-        if (action === 13 && Object.values(values).some(value => value === '')) {
-            // Mostrar una alerta indicando que los campos son obligatorios
-            Alert.alert(
-                'Error',
-                'Por favor completa todos los campos antes de agregar el negocio.',
-                [
-                    { text: 'OK', onPress: () => console.log('Alerta cerrada') }
-                ],
-                { cancelable: false }
-            );
-        } else if (action === 13) {
+        if (action === accion.Agregar) {
             Alert.alert(
                 'Confirmar',
                 '¿Estás seguro de que deseas agregar este negocio?',
@@ -53,15 +57,15 @@ export default function formNegocios({ initialValues, onSubmit, action }) {
                     {
                         text: 'Agregar',
                         onPress: () => {
-                            event.persist();
                             onSubmit(values);
+                            formikActions.setSubmitting(false);
                             navigation.navigate('SplashCatalogoNeg', { accion: action });
                         },
                     },
                 ],
                 { cancelable: false }
             );
-        } else if (action === 14) {
+        } else if (action === accion.Editar) {
             Alert.alert(
                 'Confirmar',
                 '¿Estás seguro de que deseas editar este negocio?',
@@ -73,8 +77,8 @@ export default function formNegocios({ initialValues, onSubmit, action }) {
                     {
                         text: 'Editar',
                         onPress: () => {
-                            event.persist();
                             onSubmit(values);
+                            formikActions.setSubmitting(false);
                             navigation.navigate('SplashCatalogoNeg', { accion: action });
                         },
                     },
@@ -91,7 +95,7 @@ export default function formNegocios({ initialValues, onSubmit, action }) {
             <Formik
                 initialValues={initialValues}
                 validationSchema={validaciones}
-                onSubmit={(values) => handleButtonPress(values)}
+                onSubmit={(values, actions) => handleButtonPress(values, actions)}
             >
                 {formikProps => (
                     <View>
@@ -190,10 +194,11 @@ export default function formNegocios({ initialValues, onSubmit, action }) {
                                 <Text style={styles.textStyle}>Cancelar</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
-                                style={[styles.button, styles.buttonVerde]}
-                                onPress={(event) => handleButtonPress(formikProps.values, event)}
+                                style={[styles.button, formikProps.isValid && !formikProps.isSubmitting ? styles.buttonVerde : styles.buttonGris]}
+                                onPress={formikProps.handleSubmit}
+                                disabled={!formikProps.isValid || formikProps.isSubmitting}
                             >
-                                <Text style={styles.textStyle}>{action === 13 ? 'Agregar' : 'Editar'}</Text>
+                                <Text style={styles.textStyle}>{action === accion.Agregar ? 'Agregar' : 'Editar'}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

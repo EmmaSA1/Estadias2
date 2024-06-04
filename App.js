@@ -15,10 +15,10 @@ import PaginaPrin from './Screens/PAGINA-PRIN/Página';
 import Catalogos from './Screens/CATALOGOS/Catalogos';
 
 //pantallas del catalogo privilegios
-import HomeCatalogoPriv from "./Screens/CATALOGOS/PRIVILEGIO/Home";
-import AgregarCatalogoPriv from "./Screens/CATALOGOS/PRIVILEGIO/Agregar";
-import SplashCatalogoPriv from "./Screens/CATALOGOS/PRIVILEGIO/Splash";
-import GrupPrivCatalogoPriv from "./Screens/CATALOGOS/PRIVILEGIO/GrupPriv";
+import HomeCatalogoPriv from "./Screens/CATALOGOS/PRIVILEGIOS/Home";
+import AgregarCatalogoPriv from "./Screens/CATALOGOS/PRIVILEGIOS/Agregar";
+import SplashCatalogoPriv from "./Screens/CATALOGOS/PRIVILEGIOS/Splash";
+import GrupPrivCatalogoPriv from "./Screens/CATALOGOS/PRIVILEGIOS/GrupPriv";
 
 //pantallas del catalogo negocios
 import HomeCatalogoNeg from "./Screens/CATALOGOS/NEGOCIOS/Home";

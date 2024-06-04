@@ -1,9 +1,7 @@
 /*
- FRANCO HERNANDEZ ANGELUZ ABIMELEK y EMMANUEL SANTOS APAEZ
+ FRANCO HERNANDEZ ANGELUZ ABIMELEK y Emmanuel Santos Apaez
  08 de mayo de 2024 - 12 hrs
  Descripcion: Contiene las variables comunes para los archivos utilizados en el sistema
-
-
 */
 
 export let accion = {
@@ -29,13 +27,12 @@ export let nombreCatalogo = {
   103: 'Localidades'
 };
 
-
 export const nombreNegocio = {
-    nombre: ''
+  nombre: ''
 };
 
 export const CodigoNegocio = {
-  codigo: ''
+codigo: ''
 };
 
 export const setNombreNegocio = (nombre) => {
