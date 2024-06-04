@@ -13,6 +13,7 @@ import Login from './Screens/LOGIN/Login';
 import Filter from './Screens/FILTRADO/Filtrado';
 import PaginaPrin from './Screens/PAGINA-PRIN/Página';
 import Catalogos from './Screens/CATALOGOS/Catalogos';
+import Reportes from "./Screens/REPORTES/Reportes";
 
 //pantallas del catalogo privilegios
 import HomeCatalogoPriv from "./Screens/CATALOGOS/PRIVILEGIOS/Home";
@@ -34,6 +35,30 @@ import SplashCatalogoMov from "./Screens/CATALOGOS/MOVIMIENTOS/Splash";
 import HomeCatalogoLoc from "./Screens/CATALOGOS/LOCALIDADES/Home";
 import AgregarCatalogoLoc from "./Screens/CATALOGOS/LOCALIDADES/Agregar";
 import SplashCatalogoLoc from "./Screens/CATALOGOS/LOCALIDADES/Splash";
+
+//pantallas de catalogo de productos 
+import HomeCatalogoProd from "./Screens/CATALOGOS/PRODUCTOS/Home";
+import AgregarCatalogoProd from "./Screens/CATALOGOS/PRODUCTOS/Agregar";
+import SplashCatalogoProd from "./Screens/CATALOGOS/PRODUCTOS/Splash";
+
+//pantallas de catalogo de usuarios
+import HomeCatalogoUser from "./Screens/CATALOGOS/USUARIOS/Home";
+import AgregarCatalogoUser from "./Screens/CATALOGOS/USUARIOS/Agregar";
+import SplashCatalogoUser from "./Screens/CATALOGOS/USUARIOS/Splash";
+
+//pantallas de catalogo de cliente
+import HomeCatalogoClie from "./Screens/CATALOGOS/CLIENTE/Home";
+import AgregarCatalogoClie from "./Screens/CATALOGOS/CLIENTE/Agregar";
+import SplashCatalogoClie from "./Screens/CATALOGOS/CLIENTE/Splash";
+
+//pantallas de catalogo de configuración 
+import HomeCatalogoConf from "./Screens/CATALOGOS/CONFIGURACION/Home";
+import AgregarCatalogoConf from "./Screens/CATALOGOS/CONFIGURACION/Agregar";
+import SplashCatalogoConf from "./Screens/CATALOGOS/CONFIGURACION/Splash";
+
+
+
+
 
 export default function App() {
   //se declara el stack navigator
@@ -181,6 +206,109 @@ export default function App() {
             title: "SplashCatalogoLoc",
             headerShown: false,
           }}
+          />
+
+          <Stack.Screen
+          name="HomeCatalogoProd"
+          component={HomeCatalogoProd}
+          options={{
+            title: "HomeCatalogoProd",
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="AgregarCatalogoProd"
+          component={AgregarCatalogoProd}
+          options={{
+            title: "AgregarCatalogoProd",
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="SplashCatalogoProd"
+          component={SplashCatalogoProd}
+          options={{
+            title: "SplashCatalogoProd",
+            headerShown: false,
+          }}
+          />
+
+          <Stack.Screen
+          name="HomeCatalogoUser"
+          component={HomeCatalogoUser}
+          options={{
+            title: "HomeCatalogoUser",
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="AgregarCatalogoUser"
+          component={AgregarCatalogoUser}
+          options={{
+            title: "AgregarCatalogoUser",
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="SplashCatalogoUser"
+          component={SplashCatalogoUser}
+          options={{
+            title: "SplashCatalogoUser",
+            headerShown: false,
+          }}
+          />
+
+          <Stack.Screen
+          name="HomeCatalogoClie"
+          component={HomeCatalogoClie}
+          options={{
+            title: "HomeCatalogoClie",
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="AgregarCatalogoClie"
+          component={AgregarCatalogoClie}
+          options={{
+            title: "AgregarCatalogoClie",
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="SplashCatalogoClie"
+          component={SplashCatalogoClie}
+          options={{
+            title: "SplashCatalogoClie",
+            headerShown: false,
+          }}
+
+          />
+          <Stack.Screen
+          name="HomeCatalogoConf"
+          component={HomeCatalogoConf}
+          options={{
+            title: "HomeCatalogoConf",
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="AgregarCatalogoConf"
+          component={AgregarCatalogoConf}
+          options={{
+            title: "AgregarCatalogoConf",
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="SplashCatalogoConf"
+          component={SplashCatalogoConf}
+          options={{
+            title: "SplashCatalogoConf",
+            headerShown: false,
+          }}
+
+
+
         />
       </Stack.Navigator>
     );
