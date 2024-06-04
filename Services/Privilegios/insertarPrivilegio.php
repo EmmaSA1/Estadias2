@@ -19,10 +19,10 @@ header('Content-Type: application/json');
 $data = json_decode(file_get_contents('php://input'), true);
 
 // Validar datos recibidos
-if (isset($data['NOMBRE_PRIVILEGIO'])) {
+if (isset($data['DESCRIPCION_PRIVILEGIO'])) {
     $datos = new dtoPrivilegio();
     //establecer los datos para el nuevo negocio
-    $datos->setNombre_privilegio($data['NOMBRE_PRIVILEGIO']);
+    $datos->setNombre_privilegio($data['DESCRIPCION_PRIVILEGIO']);
    
     $daoPrivilegio = new daoPrivilegio();
     //llamar a la funcion insertarNegocio y pasarle los datos

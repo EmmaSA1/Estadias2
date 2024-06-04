@@ -1,4 +1,10 @@
 <?php
+/*
+ FRANCO HERNANDEZ ANGELUZ ABIMELEK
+ 29 de mayo de 2024 - 18 hrs
+ Descripcion: Contiene el servicio para editar un negocio usando la funcion "actualizarNegocio"
+*/
+
 include '../../conexion.php';
 include '../../dao/daoNegocio.php';
 include '../../dto/dtoNegocio.php';

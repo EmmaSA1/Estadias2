@@ -1,4 +1,10 @@
 <?php
+/*
+ FRANCO HERNANDEZ ANGELUZ ABIMELEK
+ 29 de mayo de 2024 - 18 hrs
+ Descripcion: Contiene el servicio para insertar un negocio usando la funcion "insertarNegocio"
+*/
+
 include '../../conexion.php';
 include '../../dao/daoNegocio.php';
 include '../../dto/dtoNegocio.php';
