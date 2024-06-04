@@ -50,10 +50,6 @@ export default function Home() {
         console.log(accion);
 
         switch (accion) {
-            case 13:
-                console.log("Agregar nuevo producto");
-                navigation.replace('AgregarCatalogoConf', { accion: accion });
-                break;
             case 10:
                 console.log("Consultar configuración");
                 break;
@@ -250,11 +246,7 @@ export default function Home() {
             <View style={styles.container3}>
                 <Text style={styles.headerTitulo}>{Comun.nombreCatalogo[107]}</Text>
                 <View style={styles.container4}>
-                    <Pressable
-                        style={[styles.button, styles.buttonAzul]}
-                        onPress={() => handleAction(Comun.accion.Agregar)}>
-                        <Text style={styles.textStyle}>Agregar</Text>
-                    </Pressable>
+                   
                     <Pressable
                         style={[styles.button, styles.buttonAzul]}
                         onPress={() => setStatusFilter(statusFilter === 'null' ? 'baja' : 'null')}

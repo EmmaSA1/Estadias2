@@ -2,13 +2,9 @@
  FRANCO HERNANDEZ ANGELUZ ABIMELEK Y EMMANUEL SANTOS APAEZ
  11 de mayo de 2024 - 14 hrs
  Descripcion: Contiene la los estilos de la aplicacion
-
-  21 de mayo de 2024 - 14 hrs
- Descripcion: Contiene la los estilos de la aplicacion
 */
 
 import { StyleSheet } from "react-native";
-import { Row } from "react-native-table-component";
 
 //variables para cada color de fonfo y de botones
 //variable para el color del fondo
@@ -24,6 +20,8 @@ let fondoColorAmarrillo = "#F1B70C";
 let botonRojo = "red";
 
 let botonVerde = "green";
+
+let botonGris = "gray";
 
 //variable para seleccionar le color de anterior
 let botonesNextPrevious = "#DDDDDD";
@@ -66,6 +64,7 @@ let colorSobra = "#000";
 
 //valores hexa en variables
 export const styles = StyleSheet.create({
+  //contenedor principal de la pantalla
   //contenedor principal de la pantalla
   container: {
     flex: 1,
@@ -272,6 +271,10 @@ export const styles = StyleSheet.create({
     backgroundColor: botonVerde,
   },
 
+  buttonGris: {
+    backgroundColor: botonGris,
+  },
+
   /*button: {
     backgroundColor: botonEditar,
   },*/
@@ -304,7 +307,7 @@ export const styles = StyleSheet.create({
 
   input: {
     height: 50,
-    width: 300, // Ajusta el valor para que sea igual en ambos estilos
+    width: 293, // Ajusta el valor para que sea igual en ambos estilos
     borderWidth: 1,
     borderColor: borderColor,
     borderRadius: 10,
@@ -317,23 +320,9 @@ export const styles = StyleSheet.create({
     marginLeft: "auto", // Esto ajustará el inputCodPriv hacia la derecha
     marginRight: "auto", // Esto ajustará el inputCodPriv hacia la izquierda
   },
+
   
-  inputNombre: {
-    height: 50,
-    width: 300, // Ajustamos el ancho relativo en lugar de un valor fijo
-    borderWidth: 1,
-    borderColor: borderColor,
-    borderRadius: 10,
-    paddingHorizontal: 20, // Ajustamos el padding horizontal
-    marginBottom: 20,
-    backgroundColor: colorTabla,
-    fontSize: 16,
-    color: colorLetraNegra,
-    textAlign: "center",
-    marginLeft: "auto", // Esto ajustará el inputCodPriv hacia la derecha
-    marginRight: "auto", // Esto ajustará el inputCodPriv hacia la izquierda
-  },
-  
+
   inputCodPriv: {
     height: 50,
     width: 300, // Ajustamos el ancho relativo en lugar de un valor fijo
@@ -349,8 +338,6 @@ export const styles = StyleSheet.create({
     color: colorLetraNegra,
     textAlign: "center",
   },
-
-  
 
   titleInput: {
     color: colorLetraNegra,
@@ -587,7 +574,6 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 
-
   buttonContainer1: {
     flexDirection: "row",
     justifyContent: "space-around",
@@ -660,9 +646,9 @@ export const styles = StyleSheet.create({
     padding: 40,
     elevation: 1,
   },
-  
+
   backButton: {
-     flexDirection: "row",
+    flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
     width: "80%",
@@ -676,8 +662,8 @@ export const styles = StyleSheet.create({
    alignItems: "center",
    width: "57%",
    marginBottom: 50,
-   fontWeight: "bold",
- },
+   fontWeight:"bold",
+ },
 
   backButtonText: {
     borderRadius: 20,
@@ -686,7 +672,7 @@ export const styles = StyleSheet.create({
     color: "white",
     fontSize: 18,
     fontWeight: "bold",
-   },
+  },
 
   tableChica: {
     height: "auto",
@@ -699,7 +685,7 @@ export const styles = StyleSheet.create({
     overflow: "hidden",
   },
 
-  listGrupPriv:{
+  listGrupPriv: {
     alignItems: "center",
     padding: 10,
     margin: 10,
@@ -707,12 +693,13 @@ export const styles = StyleSheet.create({
     borderBottomColor: borderColor,
     width: "100%",
   },
+
   lastItem: {
     borderBottomWidth: 0,
-},
+  },
 
-  textGrupPriv:{
+  textGrupPriv: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });

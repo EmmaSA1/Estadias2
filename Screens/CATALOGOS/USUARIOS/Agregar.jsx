@@ -8,7 +8,7 @@ import React from 'react';
 import { View, Text, ScrollView, Alert } from 'react-native';
 import { styles } from '../../../Styles/Styles';
 import * as Comun from '../../../Config/Comun';
-import FormProductos from '../../../Config/Formularios/formUsuarios';
+import FormUsuarios from '../../../Config/Formularios/formUsuarios';
 import { Backend } from "../../../Config/Conexion/backendConfig";
 
 export default function Agregar({ route }) {
@@ -53,7 +53,7 @@ export default function Agregar({ route }) {
             <Text style={styles.headerTitulo}>Agregar {Comun.nombreCatalogo[105]}</Text>
             <View style={styles.container6}>
                 <ScrollView>
-                    <FormNegocios onSubmit={handleSubmit} action={accion} initialValues={initialValues} />
+                    <FormUsuarios onSubmit={handleSubmit} action={accion} initialValues={initialValues} />
                 </ScrollView>
             </View>
         </View>

@@ -37,7 +37,7 @@ export default function Home() {
     const [selectedValues, setSelectedValues] = useState(initialSelected);
     // Estado para la paginación
     const [page, setPage] = useState(1);
-    const pageSize = 10;
+    const pageSize = Comun.CantidadMaximaMostrada;
     // Estado para el filtro por estado
     const [statusFilter, setStatusFilter] = useState('null');
     //aqui van los datos de la base de datos
@@ -273,14 +273,13 @@ export default function Home() {
                     </View>
                     <View style={styles.Encabezados}>
                         <Text style={styles.Titulo}>NOMBRE</Text>
-                        <Text style={styles.Titulo}>GIRO</Text>
                         <Text style={styles.TituloAcciones}>ACCIONES</Text>
                     </View>
                     <ScrollView>
                         {data.filter((val) => {
                             if (searchTerm === '') {
                                 return val;
-                            } else if (val.NOMBRE.toLowerCase().includes(searchTerm.toLowerCase())) {
+                            } else if (val.NOMBRE_PRODUCTO.toLowerCase().includes(searchTerm.toLowerCase())) {
                                 return val;
                             }
                         })
@@ -288,8 +287,7 @@ export default function Home() {
                             .slice((page - 1) * pageSize, page * pageSize)
                             .map((item, index) => (
                                 <View key={index} style={styles.Contenido}>
-                                    <Text style={styles.cell}>{item.NOMBRE}</Text>
-                                    <Text style={styles.cell}>{item.GIRO}</Text>
+                                    <Text style={styles.cell}>{item.NOMBRE_PRODUCTO}</Text>
                                     <View style={styles.iconContainer}>
                                         <TouchableOpacity
                                             onPress={() => handleAction(Comun.accion.Editar, item.COD_PRODUCTO)}

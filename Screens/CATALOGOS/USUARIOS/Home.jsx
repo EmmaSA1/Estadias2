@@ -39,7 +39,7 @@ export default function Home() {
     const [selectedValues, setSelectedValues] = useState(initialSelected);
     // Estado para la paginación
     const [page, setPage] = useState(1);
-    const pageSize = 10;
+    const pageSize = Comun.CantidadMaximaMostrada;
     // Estado para el filtro por estado
     const [statusFilter, setStatusFilter] = useState('null');
     //aqui van los datos de la base de datos

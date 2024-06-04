@@ -16,11 +16,13 @@ import { Backend } from "../../../Config/Conexion/backendConfig";
 //Declaramos los valores iniciales del formulario 
 const initialSelected = {
     NOMBRE: '',
-        APELLIDO_P: '',
-        APELLIDO_M: '',
-        CELULAR: '',
-        E_MAIL: '',
-        DIRECCION: ''
+    APELLIDO_P: '',
+    APELLIDO_M: '',
+    CELULAR: '',
+    E_MAIL: '',
+    DIRECCION: '',
+    LOCALIDAD: '',
+    PERIODO_PAGO:''
 };
 
 export default function Home() {
@@ -39,7 +41,7 @@ export default function Home() {
     const [selectedValues, setSelectedValues] = useState(initialSelected);
     // Estado para la paginación
     const [page, setPage] = useState(1);
-    const pageSize = 10;
+    const pageSize = Comun.CantidadMaximaMostrada;
     // Estado para el filtro por estado
     const [statusFilter, setStatusFilter] = useState('null');
     //aqui van los datos de la base de datos
@@ -54,7 +56,7 @@ export default function Home() {
         switch (accion) {
             case 13:
                 console.log("Agregar nuevo cliente");
-                navigation.replace('AgregarCatalogoProd', { accion: accion });
+                navigation.replace('AgregarCatalogoClie', { accion: accion });
                 break;
             case 10:
                 console.log("Consultar cliente");
@@ -136,7 +138,7 @@ export default function Home() {
                 },
                 body: JSON.stringify(newData[index]),
             });
-    
+
             const result = await response.json();
             if (result.success) {
                 console.log("Datos editados:", newData[index]);
@@ -148,7 +150,7 @@ export default function Home() {
             Alert.alert('Error', 'Hubo un problema al actualizar el cliente.');
         }
     };
-    
+
 
     const PonerBaja = (cod_cliente) => {
         Alert.alert(
@@ -275,7 +277,7 @@ export default function Home() {
                     </View>
                     <View style={styles.Encabezados}>
                         <Text style={styles.Titulo}>NOMBRE</Text>
-                        <Text style={styles.Titulo}>GIRO</Text>
+                        <Text style={styles.Titulo}>APELLIDO_P</Text>
                         <Text style={styles.TituloAcciones}>ACCIONES</Text>
                     </View>
                     <ScrollView>
@@ -291,7 +293,7 @@ export default function Home() {
                             .map((item, index) => (
                                 <View key={index} style={styles.Contenido}>
                                     <Text style={styles.cell}>{item.NOMBRE}</Text>
-                                    <Text style={styles.cell}>{item.GIRO}</Text>
+                                    <Text style={styles.cell}>{item.APELLIDO_P}</Text>
                                     <View style={styles.iconContainer}>
                                         <TouchableOpacity
                                             onPress={() => handleAction(Comun.accion.Editar, item.COD_CLIENTE)}

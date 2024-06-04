@@ -53,7 +53,7 @@ import SplashCatalogoClie from "./Screens/CATALOGOS/CLIENTE/Splash";
 
 //pantallas de catalogo de configuración 
 import HomeCatalogoConf from "./Screens/CATALOGOS/CONFIGURACION/Home";
-import AgregarCatalogoConf from "./Screens/CATALOGOS/CONFIGURACION/Agregar";
+//import AgregarCatalogoConf from "./Screens/CATALOGOS/CONFIGURACION/Agregar";
 import SplashCatalogoConf from "./Screens/CATALOGOS/CONFIGURACION/Splash";
 
 
@@ -288,14 +288,6 @@ export default function App() {
           component={HomeCatalogoConf}
           options={{
             title: "HomeCatalogoConf",
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="AgregarCatalogoConf"
-          component={AgregarCatalogoConf}
-          options={{
-            title: "AgregarCatalogoConf",
             headerShown: false,
           }}
         />

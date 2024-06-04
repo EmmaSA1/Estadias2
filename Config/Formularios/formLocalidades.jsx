@@ -26,7 +26,7 @@ const accion = {
     GrupPriv: 15
   };
 
-export default function FormLocalidades({ initialValues, onSubmit, action }) {
+export default function formLocalidades({ initialValues, onSubmit, action }) {
     // Hook para la navegación
     const navigation = useNavigation();
 
@@ -98,7 +98,7 @@ export default function FormLocalidades({ initialValues, onSubmit, action }) {
                     <View>
                         <Text style={styles.titleInput}>Nombre de la localidad</Text>
                         <TextInput
-                            style={styles.inputNombre}
+                            style={styles.input}
                             onChangeText={formikProps.handleChange('LOCALIDAD')}
                             onBlur={formikProps.handleBlur('LOCALIDAD')}
                             placeholder="Nombre de la localidad"
@@ -109,7 +109,7 @@ export default function FormLocalidades({ initialValues, onSubmit, action }) {
                         )}
 
                         <Text style={styles.titleInput}>Estado de la localidad</Text>
-                        <View style={styles.inputNombre}>
+                        <View style={styles.input}>
                             <Picker
                                 selectedValue={formikProps.values.ESTADOS}
                                 onValueChange={(itemValue) => formikProps.setFieldValue('ESTADOS', itemValue)}

@@ -51,7 +51,7 @@ export default function Agregar({ route }) {
             <Text style={styles.headerTitulo}>Agregar {Comun.nombreCatalogo[104]}</Text>
             <View style={styles.container6}>
                 <ScrollView>
-                    <FormNegocios onSubmit={handleSubmit} action={accion} initialValues={initialValues} />
+                    <FormProductos onSubmit={handleSubmit} action={accion} initialValues={initialValues} />
                 </ScrollView>
             </View>
         </View>

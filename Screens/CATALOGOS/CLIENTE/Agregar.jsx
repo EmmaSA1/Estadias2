@@ -42,7 +42,9 @@ export default function Agregar({ route }) {
         APELLIDO_M: '',
         CELULAR: '',
         E_MAIL: '',
-        DIRECCION: ''
+        DIRECCION: '',
+        LOCALIDAD: '',
+        PERIODO_PAGO:''
     };
 
     return (
@@ -53,7 +55,7 @@ export default function Agregar({ route }) {
             <Text style={styles.headerTitulo}>Agregar {Comun.nombreCatalogo[106]}</Text>
             <View style={styles.container6}>
                 <ScrollView>
-                    <FormNegocios onSubmit={handleSubmit} action={accion} initialValues={initialValues} />
+                    <FormCliente onSubmit={handleSubmit} action={accion} initialValues={initialValues} />
                 </ScrollView>
             </View>
         </View>

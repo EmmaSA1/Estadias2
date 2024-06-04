@@ -32,7 +32,7 @@ export default function Home() {
     const [accion, setAccion] = useState('');
     // Hook para la paginación
     const [page, setPage] = useState(1);
-    const pageSize = 10;
+    const pageSize = Comun.CantidadMaximaMostrada;
     // Agregar estado para los valores del negocio seleccionado
     const [selectedValues, setSelectedValues] = useState(initialSelected);
     // Hook para el filtro por status
